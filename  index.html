@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIIP 4급 - সম্পূর্ণ বই</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; color: #333; }
+        header { background-color: #0d47a1; color: white; text-align: center; padding: 20px; }
+        header h1 { font-size: 24px; margin-bottom: 5px; }
+        .tab-container { display: flex; overflow-x: auto; background-color: #1565c0; padding: 10px; white-space: nowrap; }
+        .tab-btn { background-color: #e3f2fd; color: #0d47a1; border: none; padding: 10px 15px; margin-right: 8px; border-radius: 20px; font-weight: bold; }
+        .tab-btn.active { background-color: #ffeb3b; }
+        .content-container { padding: 20px; max-width: 900px; margin: 0 auto; background: white; min-height: 80vh; }
+        .unit-page { display: none; }
+        .unit-page.active { display: block; }
+        h2.unit-title { color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; margin-bottom: 20px; }
+        .box { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; }
+        .korean-box { background-color: #f5f9ff; padding: 15px; color: #0d47a1; font-weight: bold; }
+        .bangla-box { background-color: #fffde7; padding: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #e3f2fd; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>KIIP 4급 (কোরিয়ান ভাষা ও সংস্কৃতি)</h1>
+        <p>কোরিয়ান এবং বাংলা অর্থসহ সম্পূর্ণ পড়াশোনার গাইড</p>
+    </header>
+
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="openUnit('unit1', this)">Unit 1</button>
+        <button class="tab-btn" onclick="openUnit('unit2', this)">Unit 2</button>
+        <button class="tab-btn" onclick="openUnit('unit3', this)">Unit 3</button>
+        <button class="tab-btn" onclick="openUnit('unit4', this)">Unit 4</button>
+        <button class="tab-btn" onclick="openUnit('unit5', this)">Unit 5</button>
+        <button class="tab-btn" onclick="openUnit('unit6', this)">Unit 6</button>
+        <button class="tab-btn" onclick="openUnit('unit7', this)">Unit 7</button>
+        <button class="tab-btn" onclick="openUnit('unit8', this)">Unit 8</button>
+        <button class="tab-btn" onclick="openUnit('unit9', this)">Unit 9</button>
+        <button class="tab-btn" onclick="openUnit('unit10', this)">Unit 10</button>
+        <button class="tab-btn" onclick="openUnit('unit11', this)">Unit 11</button>
+        <button class="tab-btn" onclick="openUnit('unit12', this)">Unit 12</button>
+        <button class="tab-btn" onclick="openUnit('unit13', this)">Unit 13</button>
+        <button class="tab-btn" onclick="openUnit('unit14', this)">Unit 14</button>
+        <button class="tab-btn" onclick="openUnit('unit15', this)">Unit 15</button>
+        <button class="tab-btn" onclick="openUnit('unit16', this)">Unit 16</button>
+    </div>
+
+    <div class="content-container">
+        <div id="unit1" class="unit-page active">
+            <h2 class="unit-title">Unit 1: 한국 생활 적응 (কোরিয়ায় খাপ খাইয়ে নেওয়া)</h2>
+            <h3>1. 주요 어휘 (মূল শব্দভাণ্ডার)</h3>
+            <table>
+                <tr><th>কোরিয়ান</th><th>বাংলা অর্থ</th></tr>
+                <tr><td>적응하다</td><td>খাপ খাইয়ে নেওয়া</td></tr>
+                <tr><td>낯설다</td><td>অপরিচিত লাগা</td></tr>
+                <tr><td>실수하다</td><td>ভুল করা</td></tr>
+            </table>
+            <h3 style="margin-top: 20px;">2. 본문 (মূল পাঠ)</h3>
+            <div class="box">
+                <div class="korean-box">저는 한국에 온 지 1년이 되었습니다. 처음에는 한국 음식이 입에 맞지 않아서 힘들었습니다. 하지만 지금은 한국 생활에 많이 적응해서 외롭지 않습니다.</div>
+                <div class="bangla-box">আমি কোরিয়ায় এসে ১ বছর হয়েছে। প্রথমে কোরিয়ান খাবার আমার মুখে লাগত না বলে কষ্ট হতো। কিন্তু এখন আমি কোরিয়ান জীবনে অনেকটা খাপ খাইয়ে নিয়েছি, তাই একা লাগে না।</div>
+            </div>
+        </div>
+
+        <div id="unit2" class="unit-page">
+            <h2 class="unit-title">Unit 2: 고쳐야 할 생활 습관</h2>
+            <p>এই অধ্যায়ের লেখা শীঘ্রই যোগ করা হবে।</p>
+        </div>
+        <div id="unit3" class="unit-page"><h2 class="unit-title">Unit 3</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit4" class="unit-page"><h2 class="unit-title">Unit 4</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit5" class="unit-page"><h2 class="unit-title">Unit 5</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit6" class="unit-page"><h2 class="unit-title">Unit 6</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit7" class="unit-page"><h2 class="unit-title">Unit 7</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit8" class="unit-page"><h2 class="unit-title">Unit 8</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit9" class="unit-page"><h2 class="unit-title">Unit 9</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit10" class="unit-page"><h2 class="unit-title">Unit 10</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit11" class="unit-page"><h2 class="unit-title">Unit 11</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit12" class="unit-page"><h2 class="unit-title">Unit 12</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit13" class="unit-page"><h2 class="unit-title">Unit 13</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit14" class="unit-page"><h2 class="unit-title">Unit 14</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit15" class="unit-page"><h2 class="unit-title">Unit 15</h2><p>শীঘ্রই আসছে...</p></div>
+        <div id="unit16" class="unit-page"><h2 class="unit-title">Unit 16</h2><p>শীঘ্রই আসছে...</p></div>
+    </div>
+
+    <script>
+        function openUnit(unitId, btn) {
+            var pages = document.getElementsByClassName("unit-page");
+            for (var i = 0; i < pages.length; i++) { pages[i].classList.remove("active"); }
+            var tabs = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
+            document.getElementById(unitId).classList.add("active");
+            btn.classList.add("active");
+        }
+    </script>
+</body>
+</html>
