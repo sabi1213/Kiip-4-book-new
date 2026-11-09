@@ -1,154 +1,238 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIIP 4급 - সম্পূর্ণ বই</title>
-    <!-- QR Code Generator Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; color: #333; }
-        
-        /* হেডার ও QR কোড ডিজাইন */
-        header { background-color: #0d47a1; color: white; text-align: center; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        header h1 { font-size: 24px; margin-bottom: 5px; }
-        header p { font-size: 14px; color: #bbdefb; margin-bottom: 10px;}
-        .qr-container { background: white; padding: 8px; border-radius: 10px; display: inline-block; margin-bottom: 5px;}
-        
-        .tab-container { display: flex; overflow-x: auto; background-color: #1565c0; padding: 10px; white-space: nowrap; }
-        .tab-btn { background-color: #e3f2fd; color: #0d47a1; border: none; padding: 10px 15px; margin-right: 8px; border-radius: 20px; font-weight: bold; }
-        .tab-btn.active { background-color: #ffeb3b; }
-        
-        .content-container { padding: 20px; max-width: 900px; margin: 0 auto; background: white; min-height: 80vh; }
-        .unit-page { display: none; }
-        .unit-page.active { display: block; }
-        
-        h2.unit-title { color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; margin-bottom: 20px; font-size: 22px;}
-        h3 { margin-top: 20px; margin-bottom: 10px; color: #0d47a1; }
-        
-        .box { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
-        .korean-box { background-color: #f5f9ff; padding: 15px; color: #0d47a1; font-weight: bold; font-size: 16px; line-height: 1.8; border-bottom: 1px dashed #ccc;}
-        .bangla-box { background-color: #fffde7; padding: 15px; font-size: 15px; line-height: 1.8;}
-        
-        .vocab-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .vocab-table th, .vocab-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        .vocab-table th { background-color: #e3f2fd; }
-        
-        .grammar-box { background-color: #fff9c4; padding: 15px; border-left: 4px solid #fbc02d; border-radius: 5px; margin-bottom: 15px;}
-        .grammar-title { color: #e65100; font-weight: bold; font-size: 16px; margin-bottom: 5px;}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d47a1">
+  <title>KIIP 4급 — ১৬ অধ্যায়ের বাংলা-কোরিয়ান গাইড</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f3f6fb; color: #263238; line-height: 1.75; }
+    header { background: linear-gradient(135deg,#0d47a1,#1976d2); color: white; text-align: center; padding: 24px 16px; }
+    header h1 { margin: 0 0 6px; font-size: clamp(22px,5vw,32px); }
+    header p { margin: 0 0 14px; color: #e3f2fd; }
+    .qr-container { display: inline-block; padding: 9px; background: white; border-radius: 12px; min-width: 118px; min-height: 118px; }
+    #qrcode { min-height: 100px; min-width: 100px; }
+    #qrcode img, #qrcode canvas { display: block; margin: auto; }
+    .share-hint { font-size: 13px; margin: 8px 0 0; }
+    .tab-container { position: sticky; top: 0; z-index: 5; display: flex; gap: 8px; overflow-x: auto; padding: 10px; background: #1565c0; }
+    .tab-btn { flex: 0 0 auto; border: 0; border-radius: 20px; padding: 9px 14px; background: #e3f2fd; color: #0d47a1; font-weight: bold; cursor: pointer; }
+    .tab-btn.active { background: #ffeb3b; color: #263238; }
+    .container { max-width: 960px; margin: 20px auto; padding: 0 12px; }
+    .unit-page { display: none; background: white; padding: clamp(16px,4vw,30px); border-radius: 14px; box-shadow: 0 4px 18px #152b4512; }
+    .unit-page.active { display: block; }
+    h2 { color: #c62828; border-bottom: 2px solid #ef9a9a; padding-bottom: 8px; margin-top: 0; }
+    h3 { color: #0d47a1; margin: 22px 0 8px; }
+    .subtitle { color: #546e7a; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 18px; }
+    th, td { border: 1px solid #d9e2ef; padding: 9px; text-align: left; vertical-align: top; }
+    th { background: #e3f2fd; color: #0d47a1; }
+    .grammar { background: #fff9c4; border-left: 4px solid #fbc02d; border-radius: 6px; padding: 12px 14px; margin: 10px 0; }
+    .grammar strong { color: #e65100; }
+    .passage { border: 1px solid #d9e2ef; border-radius: 9px; overflow: hidden; margin: 10px 0 18px; }
+    .ko, .bn { padding: 14px; }
+    .ko { background: #f1f7ff; color: #0d47a1; font-weight: bold; }
+    .bn { background: #fffde7; border-top: 1px dashed #cbd5e1; }
+    .practice { padding: 12px 14px; background: #edf7ed; border-left: 4px solid #43a047; border-radius: 6px; }
+    .page-footer { text-align: center; color: #607d8b; padding: 12px; font-size: 13px; }
+    @media (max-width: 560px) { th, td { padding: 7px; font-size: 14px; } .container { margin-top: 12px; } }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>KIIP 4급 — কোরিয়ান ভাষা ও সংস্কৃতি</h1>
+    <p>১৬ অধ্যায়ের বাংলা-কোরিয়ান পড়াশোনার গাইড</p>
+    <div class="qr-container"><div id="qrcode" aria-label="ওয়েবসাইটের QR কোড"></div></div>
+    <p class="share-hint">QR কোড স্ক্যান করে গাইডটি বন্ধুদের সঙ্গে শেয়ার করুন</p>
+  </header>
+  <nav class="tab-container" id="tabs" aria-label="অধ্যায় নির্বাচন"></nav>
+  <main class="container" id="content"></main>
+  <footer class="page-footer">শেখার সুবিধার জন্য তৈরি অনুশীলনী গাইড — এটি মূল KIIP পাঠ্যবইয়ের হুবহু অনুলিপি নয়।</footer>
 
-    <header>
-        <h1>KIIP 4급 (কোরিয়ান ভাষা ও সংস্কৃতি)</h1>
-        <p>কোরিয়ান এবং বাংলা অর্থসহ সম্পূর্ণ পড়াশোনার গাইড</p>
-        
-        <!-- QR কোড এখানে বসবে -->
-        <div class="qr-container">
-            <div id="qrcode"></div>
-        </div>
-        <p style="font-size: 12px;">স্ক্যান করে বন্ধুদের সাথে শেয়ার করুন</p>
-    </header>
+  <script>
+    const websiteUrl = "https://sa01712256100-beep.github.io/Kiip-4-book-new/";
+    const lessons = [
+      {
+        title:"한국 생활 적응", bnTitle:"কোরিয়ায় মানিয়ে নেওয়া",
+        vocab:[["적응하다","মানিয়ে নেওয়া"],["낯설다","অচেনা লাগা"],["실수하다","ভুল করা"],["예절","শিষ্টাচার"],["고향","নিজের শহর / জন্মস্থান"]],
+        grammar:[["-(으)ㄴ/는 반면에","অপরদিকে; বিপরীত বিষয় তুলনা করতে ব্যবহৃত হয়।"],["-기 때문에","কারণ / যেহেতু; কারণ ও ফল বোঝায়।"]],
+        ko:"저는 한국에 온 지 1년이 되었습니다. 처음에는 음식과 말이 낯설어서 실수를 많이 했습니다. 하지만 이웃들이 친절하게 도와주어서 지금은 한국 생활에 많이 적응했습니다. 가끔 고향이 그립지만 새로운 친구들과 즐겁게 지내고 있습니다.",
+        bn:"কোরিয়ায় আসার এক বছর হয়েছে। প্রথমে খাবার ও ভাষা অচেনা লাগত বলে অনেক ভুল করতাম। কিন্তু প্রতিবেশীরা আন্তরিকভাবে সাহায্য করায় এখন কোরিয়ার জীবনে অনেকটা মানিয়ে নিয়েছি। মাঝে মাঝে নিজের শহরের কথা মনে পড়লেও নতুন বন্ধুদের সঙ্গে ভালো আছি.",
+        practice:"নিজের নতুন পরিবেশে মানিয়ে নেওয়ার একটি অভিজ্ঞতা কোরিয়ান ভাষায় ৩টি বাক্যে লিখুন।"
+      },
+      {
+        title:"생활 습관", bnTitle:"জীবনযাপনের অভ্যাস",
+        vocab:[["습관","অভ্যাস"],["규칙","নিয়ম"],["청결하다","পরিচ্ছন্ন"],["정리하다","গুছিয়ে রাখা"],["지키다","মেনে চলা"]],
+        grammar:[["-아/어야 하다","করতে হবে; প্রয়োজন বা কর্তব্য বোঝায়।"],["-지 않다","না করা; ক্রিয়ার নেতিবাচক রূপ।"]],
+        ko:"건강한 생활을 하려면 좋은 습관을 만들어야 합니다. 저는 아침에 일찍 일어나고 방을 깨끗하게 정리합니다. 쓰레기는 정해진 규칙에 따라 버리고, 약속 시간도 잘 지키려고 합니다.",
+        bn:"স্বাস্থ্যকর জীবনযাপনের জন্য ভালো অভ্যাস গড়ে তুলতে হয়। আমি সকালে তাড়াতাড়ি উঠি এবং ঘর পরিষ্কার করে গুছিয়ে রাখি। নির্ধারিত নিয়ম মেনে আবর্জনা ফেলি এবং সময়মতো প্রতিশ্রুতি পালন করার চেষ্টা করি।",
+        practice:"আপনার প্রতিদিনের দুটি ভালো অভ্যাস লিখুন।"
+      },
+      {
+        title:"가족과 관계", bnTitle:"পরিবার ও সম্পর্ক",
+        vocab:[["가족","পরিবার"],["부모님","বাবা-মা"],["서로","একে অন্যকে"],["이해하다","বুঝতে পারা"],["배려하다","অন্যের কথা ভেবে চলা"]],
+        grammar:[["-아/어 주다","কারও জন্য কিছু করে দেওয়া।"],["-기 위해(서)","করার জন্য; উদ্দেশ্য বোঝায়।"]],
+        ko:"가족은 저에게 가장 소중한 사람들입니다. 부모님은 제가 힘들 때마다 이야기를 들어 주십니다. 저도 가족을 이해하기 위해 자주 대화하고 서로 배려하려고 노력합니다.",
+        bn:"পরিবার আমার কাছে সবচেয়ে মূল্যবান। আমি কষ্টে থাকলে বাবা-মা সবসময় আমার কথা শোনেন। আমিও পরিবারকে বোঝার জন্য নিয়মিত কথা বলি এবং একে অন্যের প্রতি যত্নশীল থাকার চেষ্টা করি।",
+        practice:"পরিবারের একজন সদস্য আপনাকে কীভাবে সাহায্য করেন, তা লিখুন।"
+      },
+      {
+        title:"학교와 공부", bnTitle:"স্কুল ও পড়াশোনা",
+        vocab:[["수업","ক্লাস"],["숙제","বাড়ির কাজ"],["시험","পরীক্ষা"],["복습하다","পুনরাবৃত্তি করা"],["집중하다","মনোযোগ দেওয়া"]],
+        grammar:[["-(으)ㄹ 수 있다/없다","পারা / না পারা।"],["-고 있다","কোনো কাজ চলছে বোঝায়।"]],
+        ko:"저는 매일 한국어 수업을 듣고 있습니다. 수업이 끝나면 숙제를 하고 배운 내용을 복습합니다. 시험 전에는 친구와 함께 공부하면 어려운 문제도 이해할 수 있습니다.",
+        bn:"আমি প্রতিদিন কোরিয়ান ভাষার ক্লাস করছি। ক্লাস শেষে বাড়ির কাজ করি এবং শেখা বিষয় পুনরাবৃত্তি করি। পরীক্ষার আগে বন্ধুর সঙ্গে পড়লে কঠিন বিষয়ও বুঝতে পারি।",
+        practice:"পরীক্ষার প্রস্তুতির জন্য আপনি কী কী করেন, ৩টি বাক্যে লিখুন।"
+      },
+      {
+        title:"직장과 일", bnTitle:"কর্মস্থল ও কাজ",
+        vocab:[["직장","কর্মস্থল"],["업무","কাজের দায়িত্ব"],["동료","সহকর্মী"],["출근하다","কাজে যাওয়া"],["퇴근하다","কাজ শেষে ফেরা"]],
+        grammar:[["-아/어야 되다","করতে হবে; প্রয়োজন বোঝায়।"],["-(으)면서","একই সময়ে দুটি কাজ করা।"]],
+        ko:"저는 회사에서 일하고 있습니다. 아침에 출근하면 오늘 할 업무를 확인합니다. 동료들과 협력하면서 맡은 일을 책임감 있게 끝내려고 합니다.",
+        bn:"আমি একটি প্রতিষ্ঠানে কাজ করি। সকালে কাজে পৌঁছে দিনের দায়িত্বগুলো দেখে নিই। সহকর্মীদের সঙ্গে সহযোগিতা করে নিজের কাজ দায়িত্বের সঙ্গে শেষ করার চেষ্টা করি।",
+        practice:"একটি কর্মদিবসে আপনার কাজের ধারাবাহিকতা লিখুন।"
+      },
+      {
+        title:"직장 예절", bnTitle:"কর্মক্ষেত্রের শিষ্টাচার",
+        vocab:[["인사하다","অভিবাদন করা"],["존댓말","সম্মানসূচক ভাষা"],["회의","সভা"],["보고하다","রিপোর্ট করা"],["약속","নির্ধারিত সময় / প্রতিশ্রুতি"]],
+        grammar:[["-기 전에","করার আগে।"],["-(으)ㄴ 후에","করার পরে।"]],
+        ko:"직장에서는 동료와 상사에게 예의 있게 인사해야 합니다. 회의에 참석하기 전에 자료를 준비하고, 회의가 끝난 후에는 중요한 내용을 정리해서 보고합니다. 약속 시간을 지키는 것도 중요합니다.",
+        bn:"কর্মস্থলে সহকর্মী ও ঊর্ধ্বতনদের ভদ্রভাবে অভিবাদন জানাতে হয়। সভায় যোগ দেওয়ার আগে প্রয়োজনীয় কাগজপত্র প্রস্তুত করি, আর সভা শেষে গুরুত্বপূর্ণ বিষয়গুলো গুছিয়ে রিপোর্ট করি। নির্ধারিত সময় মেনে চলাও গুরুত্বপূর্ণ।",
+        practice:"কর্মস্থলে মানা উচিত এমন দুটি শিষ্টাচার লিখুন।"
+      },
+      {
+        title:"쇼핑과 소비", bnTitle:"কেনাকাটা ও খরচ",
+        vocab:[["가격","দাম"],["할인","ছাড়"],["교환하다","বদল করা"],["환불하다","টাকা ফেরত নেওয়া"],["영수증","রসিদ"]],
+        grammar:[["-아/어 보다","করে দেখা বা চেষ্টা করা।"],["-(으)ㄴ/는 것 같다","মনে হওয়া / অনুমান করা।"]],
+        ko:"물건을 사기 전에 가격과 품질을 비교하는 편입니다. 할인 상품을 찾으면 필요한 물건인지 먼저 생각해 봅니다. 물건에 문제가 있으면 영수증을 가지고 가서 교환이나 환불을 요청할 수 있습니다.",
+        bn:"জিনিস কেনার আগে আমি সাধারণত দাম ও গুণমান তুলনা করি। ছাড়ের জিনিস দেখলে আগে ভাবি সেটি সত্যিই প্রয়োজন কি না। কোনো পণ্যে সমস্যা থাকলে রসিদ নিয়ে গিয়ে বদল বা টাকা ফেরত চাইতে পারি।",
+        practice:"কেনাকাটার আগে আপনি কোন বিষয়গুলো তুলনা করেন?"
+      },
+      {
+        title:"음식과 식당", bnTitle:"খাবার ও রেস্তোরাঁ",
+        vocab:[["주문하다","অর্ডার করা"],["재료","উপকরণ"],["맵다","ঝাল"],["싱겁다","নোনতা কম"],["반찬","সাইড ডিশ"]],
+        grammar:[["-(으)세요","অনুগ্রহ করে করুন; ভদ্র অনুরোধ।"],["-지 마세요","করবেন না; ভদ্র নিষেধ।"]],
+        ko:"식당에 가면 메뉴를 보고 음식을 주문합니다. 매운 음식을 잘 먹지 못해서 주문할 때 덜 맵게 해 달라고 부탁합니다. 음식을 남기지 않도록 먹을 만큼만 주문하는 것이 좋습니다.",
+        bn:"রেস্তোরাঁয় গেলে মেনু দেখে খাবার অর্ডার করি। ঝাল খাবার ভালো খেতে পারি না বলে অর্ডারের সময় কম ঝাল করতে অনুরোধ করি। খাবার নষ্ট না করতে যতটুকু খেতে পারব ততটুকুই অর্ডার করা ভালো।",
+        practice:"রেস্তোরাঁয় খাবার অর্ডার করার একটি ছোট সংলাপ লিখুন।"
+      },
+      {
+        title:"교통과 안전", bnTitle:"যাতায়াত ও নিরাপত্তা",
+        vocab:[["교통","যাতায়াত"],["환승하다","যান বদলানো"],["정류장","স্টপেজ"],["신호등","ট্রাফিক বাতি"],["안전하다","নিরাপদ"]],
+        grammar:[["-(으)려면","কিছু করতে হলে; শর্ত বোঝায়।"],["-다가","কাজ চলার মধ্যে অন্য ঘটনা ঘটলে।"]],
+        ko:"회사에 가려면 버스나 지하철을 이용할 수 있습니다. 저는 지하철역에서 환승해서 출근합니다. 길을 건널 때는 신호등을 확인하고, 운전 중에는 휴대전화를 사용하지 않아야 합니다.",
+        bn:"কাজে যেতে বাস বা পাতালরেল ব্যবহার করা যায়। আমি পাতালরেল স্টেশনে যান বদলে কাজে যাই। রাস্তা পার হওয়ার সময় ট্রাফিক বাতি দেখি এবং গাড়ি চালানোর সময় মোবাইল ব্যবহার করা উচিত নয়।",
+        practice:"আপনার বাড়ি থেকে কাজ বা স্কুলে যাওয়ার পথ বর্ণনা করুন।"
+      },
+      {
+        title:"건강과 병원", bnTitle:"স্বাস্থ্য ও হাসপাতাল",
+        vocab:[["건강","স্বাস্থ্য"],["증상","উপসর্গ"],["진료","চিকিৎসা"],["약국","ওষুধের দোকান"],["처방전","প্রেসক্রিপশন"]],
+        grammar:[["-아/어서","কারণ বা পরপর ঘটে এমন কাজ বোঝায়।"],["-(으)ㄴ 적이 있다","আগে কখনও করার অভিজ্ঞতা আছে।"]],
+        ko:"며칠 동안 기침이 나고 열이 있어서 병원에 갔습니다. 의사 선생님께 증상을 설명하고 진료를 받았습니다. 처방전을 받아 약국에서 약을 샀고, 안내받은 대로 복용했습니다.",
+        bn:"কয়েক দিন ধরে কাশি ও জ্বর থাকায় হাসপাতালে গিয়েছিলাম। ডাক্তারকে উপসর্গ বুঝিয়ে বলেছি এবং চিকিৎসা নিয়েছি। প্রেসক্রিপশন নিয়ে ওষুধের দোকান থেকে ওষুধ কিনে নির্দেশনা অনুযায়ী খেয়েছি।",
+        practice:"অসুস্থ হলে ডাক্তারকে কীভাবে উপসর্গ জানাবেন, লিখুন।"
+      },
+      {
+        title:"날씨와 계절", bnTitle:"আবহাওয়া ও ঋতু",
+        vocab:[["날씨","আবহাওয়া"],["계절","ঋতু"],["습하다","আর্দ্র"],["건조하다","শুষ্ক"],["폭우","ভারী বৃষ্টি"]],
+        grammar:[["-지만","কিন্তু; বিপরীত ভাব যুক্ত করে।"],["-(으)ㄹ 때","যখন; কোনো সময় বোঝায়।"]],
+        ko:"한국은 계절마다 날씨가 많이 다릅니다. 여름에는 덥고 습하지만 겨울에는 춥고 건조합니다. 비가 많이 올 때는 우산을 챙기고 날씨 예보를 확인합니다.",
+        bn:"কোরিয়ায় ঋতুভেদে আবহাওয়া অনেক বদলে যায়। গ্রীষ্মে গরম ও আর্দ্র, কিন্তু শীতে ঠান্ডা ও শুষ্ক। বেশি বৃষ্টি হলে ছাতা সঙ্গে নিই এবং আবহাওয়ার পূর্বাভাস দেখি।",
+        practice:"আপনার পছন্দের ঋতু এবং সেই ঋতুর আবহাওয়া বর্ণনা করুন।"
+      },
+      {
+        title:"한국 문화와 전통", bnTitle:"কোরিয়ান সংস্কৃতি ও ঐতিহ্য",
+        vocab:[["전통","ঐতিহ্য"],["명절","উৎসব"],["세배","নববর্ষের প্রণাম"],["한복","হানবক পোশাক"],["풍습","প্রথা"]],
+        grammar:[["-에 따르면","অনুযায়ী; কোনো তথ্যের উৎস বোঝায়।"],["-다고 하다","কেউ বলেছে বা শোনা কথা জানাতে।"]],
+        ko:"한국에는 설날과 추석 같은 큰 명절이 있습니다. 명절에는 가족들이 모여 음식을 나누고 어른들께 인사합니다. 한국의 전통과 풍습을 배우면 문화를 더 잘 이해할 수 있습니다.",
+        bn:"কোরিয়ায় সোল্লাল ও চুসক-এর মতো বড় উৎসব আছে। উৎসবে পরিবারের সবাই একত্র হয়, খাবার ভাগ করে খায় এবং বড়দের সম্মান জানায়। কোরিয়ার ঐতিহ্য ও প্রথা শিখলে সংস্কৃতিটি আরও ভালোভাবে বোঝা যায়।",
+        practice:"আপনার দেশের একটি উৎসবের সঙ্গে কোরিয়ান উৎসবের তুলনা করুন।"
+      },
+      {
+        title:"주거 생활", bnTitle:"বাসস্থান ও আবাসন",
+        vocab:[["집세","বাড়িভাড়া"],["계약","চুক্তি"],["관리비","রক্ষণাবেক্ষণ খরচ"],["이사하다","বাসা বদলানো"],["고장 나다","নষ্ট হওয়া"]],
+        grammar:[["-(으)면","যদি; শর্ত বোঝায়।"],["-아/어도 되다","করলেও চলবে; অনুমতি বোঝায়।"]],
+        ko:"새 집을 구할 때는 계약 조건과 집세를 꼼꼼히 확인해야 합니다. 문제가 생기면 집주인이나 관리 사무소에 연락합니다. 이사하기 전에 필요한 물건을 정리하고 주소 변경도 신청해야 합니다.",
+        bn:"নতুন বাসা খোঁজার সময় চুক্তির শর্ত ও ভাড়া ভালোভাবে দেখে নিতে হয়। কোনো সমস্যা হলে বাড়িওয়ালা বা ব্যবস্থাপনা অফিসে যোগাযোগ করি। বাসা বদলানোর আগে প্রয়োজনীয় জিনিস গুছিয়ে ঠিকানা পরিবর্তনের আবেদনও করতে হয়।",
+        practice:"বাসা ভাড়া নেওয়ার আগে কী কী যাচাই করবেন, তালিকা করুন।"
+      },
+      {
+        title:"환경 보호", bnTitle:"পরিবেশ রক্ষা",
+        vocab:[["환경","পরিবেশ"],["재활용","পুনর্ব্যবহার"],["분리수거","আলাদা করে বর্জ্য ফেলা"],["절약하다","সাশ্রয় করা"],["오염","দূষণ"]],
+        grammar:[["-도록","যাতে বা কোনো কাজের উদ্দেশ্যে।"],["-기 위해서","কিছু করার উদ্দেশ্যে।"]],
+        ko:"환경을 보호하기 위해서는 작은 실천이 중요합니다. 쓰레기를 종류별로 분리해서 버리고 일회용품 사용을 줄이도록 노력합니다. 물과 전기를 절약하면 자원을 아끼고 오염도 줄일 수 있습니다.",
+        bn:"পরিবেশ রক্ষায় ছোট ছোট কাজও গুরুত্বপূর্ণ। আবর্জনা ধরন অনুযায়ী আলাদা করে ফেলি এবং একবার ব্যবহারযোগ্য জিনিস কম ব্যবহারের চেষ্টা করি। পানি ও বিদ্যুৎ সাশ্রয় করলে সম্পদ বাঁচে এবং দূষণও কমে।",
+        practice:"পরিবেশ রক্ষায় আপনি করতে পারেন এমন তিনটি কাজ লিখুন।"
+      },
+      {
+        title:"사회와 이웃", bnTitle:"সমাজ ও প্রতিবেশী",
+        vocab:[["이웃","প্রতিবেশী"],["주민","বাসিন্দা"],["봉사하다","স্বেচ্ছাসেবা করা"],["갈등","দ্বন্দ্ব"],["해결하다","সমাধান করা"]],
+        grammar:[["-는 동안","যতক্ষণ বা যে সময়ের মধ্যে।"],["-게 되다","পরিস্থিতির কারণে কোনো পরিবর্তন হওয়া।"]],
+        ko:"이웃과 좋은 관계를 만들려면 먼저 인사를 나누는 것이 좋습니다. 주민 모임이나 봉사 활동에 참여하는 동안 새로운 사람들을 만날 수 있습니다. 의견 차이가 생기면 서로 이야기해서 문제를 해결해야 합니다.",
+        bn:"প্রতিবেশীর সঙ্গে ভালো সম্পর্ক গড়তে প্রথমে অভিবাদন বিনিময় করা ভালো। বাসিন্দাদের সভা বা স্বেচ্ছাসেবায় অংশ নেওয়ার সময় নতুন মানুষের সঙ্গে পরিচিত হওয়া যায়। মতের অমিল হলে কথা বলে সমস্যা সমাধান করা উচিত।",
+        practice:"প্রতিবেশীর সঙ্গে ভালো সম্পর্ক রাখার দুটি উপায় লিখুন।"
+      },
+      {
+        title:"미래 계획과 복습", bnTitle:"ভবিষ্যৎ পরিকল্পনা ও পুনরালোচনা",
+        vocab:[["목표","লক্ষ্য"],["계획","পরিকল্পনা"],["경험","অভিজ্ঞতা"],["노력하다","চেষ্টা করা"],["발전하다","উন্নতি করা"]],
+        grammar:[["-(으)려고 하다","কিছু করার পরিকল্পনা বা ইচ্ছা।"],["-아/어 본 적이 있다","করে দেখার অভিজ্ঞতা আছে।"]],
+        ko:"저는 앞으로 한국어 실력을 더 발전시키려고 합니다. 매일 새로운 단어를 공부하고 배운 문법을 복습할 계획입니다. 지금까지 배운 내용을 실제 대화에서 사용해 본 적이 있으며, 앞으로도 꾸준히 노력하고 싶습니다.",
+        bn:"আমি ভবিষ্যতে কোরিয়ান ভাষার দক্ষতা আরও বাড়াতে চাই। প্রতিদিন নতুন শব্দ শিখব এবং শেখা ব্যাকরণ পুনরালোচনা করার পরিকল্পনা করেছি। শেখা বিষয় বাস্তব কথোপকথনে ব্যবহার করার অভিজ্ঞতা আমার আছে, এবং সামনে নিয়মিত চেষ্টা চালিয়ে যেতে চাই।",
+        practice:"কোরিয়ান শেখার আপনার একটি লক্ষ্য এবং তা অর্জনের পরিকল্পনা লিখুন।"
+      }
+    ];
 
-    <div class="tab-container">
-        <button class="tab-btn active" onclick="openUnit('unit1', this)">Unit 1</button>
-        <button class="tab-btn" onclick="openUnit('unit2', this)">Unit 2</button>
-        <button class="tab-btn" onclick="openUnit('unit3', this)">Unit 3</button>
-        <button class="tab-btn" onclick="openUnit('unit4', this)">Unit 4</button>
-    </div>
+    const tabs = document.getElementById("tabs");
+    const content = document.getElementById("content");
 
-    <div class="content-container">
-        
-        <!-- Unit 1 Complete -->
-        <div id="unit1" class="unit-page active">
-            <h2 class="unit-title">Unit 1: 한국 생활 적응 (কোরিয়ায় খাপ খাইয়ে নেওয়া)</h2>
-            
-            <h3>1. 주요 어휘 (মূল শব্দভাণ্ডার)</h3>
-            <table class="vocab-table">
-                <tr><th>কোরিয়ান</th><th>বাংলা অর্থ</th></tr>
-                <tr><td>적응하다</td><td>খাপ খাইয়ে নেওয়া / অভিযোজন করা</td></tr>
-                <tr><td>낯설다</td><td>অপরিচিত লাগা / অচেনা লাগা</td></tr>
-                <tr><td>실수하다</td><td>ভুল করা</td></tr>
-                <tr><td>문화가 다르다</td><td>সংস্কৃতি আলাদা</td></tr>
-                <tr><td>예절</td><td>শিষ্টাচার / আচরণবিধি</td></tr>
-                <tr><td>무례하다</td><td>অভদ্র / অশোভন</td></tr>
-                <tr><td>친절하다</td><td>দয়ালু / বন্ধুত্বপূর্ণ</td></tr>
-                <tr><td>외로움을 느끼다</td><td>একাকীত্ব অনুভব করা</td></tr>
-                <tr><td>힘들다</td><td>কষ্ট হওয়া / কঠিন লাগা</td></tr>
-                <tr><td>도움을 받다</td><td>সাহায্য পাওয়া</td></tr>
-                <tr><td>고향</td><td>নিজ শহর / জন্মস্থান</td></tr>
-                <tr><td>그리워하다</td><td>মিস করা / মনে পড়া</td></tr>
-            </table>
+    function renderBook() {
+      lessons.forEach((lesson, index) => {
+        const button = document.createElement("button");
+        button.className = "tab-btn" + (index === 0 ? " active" : "");
+        button.type = "button";
+        button.textContent = "অধ্যায় " + (index + 1);
+        button.setAttribute("role", "tab");
+        button.setAttribute("aria-selected", index === 0 ? "true" : "false");
+        button.addEventListener("click", () => openLesson(index));
+        tabs.appendChild(button);
 
-            <h3>2. 주요 문법 (গুরুত্বপূর্ণ ব্যাকরণ)</h3>
-            
-            <div class="grammar-box">
-                <div class="grammar-title">১. -(으)ㄴ/는 반면에 (বিপরীত অর্থ) = যেখানে / অপরদিকে</div>
-                <p><b>ব্যবহার:</b> দুইটি বিপরীত বিষয় তুলনা করতে।</p>
-                <p><b>উদাহরণ:</b> 한국은 날씨가 건조한 <b>반면에</b> 방글라데시는 습도가 높습니다.<br>
-                <b>বাংলা:</b> কোরিয়ার আবহাওয়া শুষ্ক, <b>অপরদিকে</b> বাংলাদেশের আর্দ্রতা বেশি।</p>
-            </div>
+        const page = document.createElement("article");
+        page.className = "unit-page" + (index === 0 ? " active" : "");
+        page.id = "lesson-" + (index + 1);
+        page.innerHTML = `
+          <h2>অধ্যায় ${index + 1}: ${lesson.title}</h2>
+          <p class="subtitle"><strong>বাংলা:</strong> ${lesson.bnTitle}</p>
+          <h3>১. 주요 어휘 — গুরুত্বপূর্ণ শব্দ</h3>
+          <table><thead><tr><th>কোরিয়ান</th><th>বাংলা অর্থ</th></tr></thead><tbody>
+            ${lesson.vocab.map(([ko,bn]) => `<tr><td lang="ko">${ko}</td><td>${bn}</td></tr>`).join("")}
+          </tbody></table>
+          <h3>২. 주요 문법 — গুরুত্বপূর্ণ ব্যাকরণ</h3>
+          ${lesson.grammar.map(([form,explanation]) => `<div class="grammar"><strong>${form}</strong><br>${explanation}</div>`).join("")}
+          <h3>৩. 본문 — মূল পাঠ</h3>
+          <div class="passage"><div class="ko" lang="ko">${lesson.ko}</div><div class="bn">${lesson.bn}</div></div>
+          <div class="practice"><strong>অনুশীলন:</strong> ${lesson.practice}</div>`;
+        content.appendChild(page);
+      });
+    }
 
-            <div class="grammar-box">
-                <div class="grammar-title">২. -기 때문에 (কারণ বোঝাতে) = যেহেতু / কারণ</div>
-                <p><b>ব্যবহার:</b> কারণ ও ফলাফল বোঝাতে।</p>
-                <p><b>উদাহরণ:</b> 한국 생활에 적응하<b>기 때문에</b> 외롭지 않습니다.<br>
-                <b>বাংলা:</b> কোরিয়ান জীবনে খাপ খাইয়ে নিয়েছি <b>যেহেতু</b>, একা লাগছে না।</p>
-            </div>
+    function openLesson(index) {
+      document.querySelectorAll(".unit-page").forEach((page, i) => page.classList.toggle("active", i === index));
+      document.querySelectorAll(".tab-btn").forEach((button, i) => {
+        button.classList.toggle("active", i === index);
+        button.setAttribute("aria-selected", i === index ? "true" : "false");
+      });
+    }
 
-            <h3>3. 본문 (মূল পাঠ)</h3>
-            <div class="box">
-                <div class="korean-box">
-                    저는 한국에 온 지 1년이 되었습니다. 처음에는 한국 음식이 입에 맞지 않아서 힘들었습니다. 그리고 한국어로 말하는 것이 낯설어서 실수도 많이 했습니다. 하지만 지금은 한국 생활에 많이 적응했습니다. 한국 사람들이 친절해서 도움을 많이 받았습니다. 가끔 고향이 그리울 때도 있지만, 이제는 외롭지 않습니다.
-                </div>
-                <div class="bangla-box">
-                    আমি কোরিয়ায় এসে ১ বছর হয়েছে। প্রথমে কোরিয়ান খাবার আমার মুখে লাগত না বলে কষ্ট হতো। আর কোরিয়ান ভাষায় কথা বলা আমার কাছে অপরিচিত লাগত, তাই অনেক ভুল করতাম। কিন্তু এখন আমি কোরিয়ান জীবনে অনেকটা খাপ খাইয়ে নিয়েছি। কোরিয়ান মানুষরা দয়ালু, তাই আমি অনেক সাহায্য পেয়েছি। মাঝে মাঝে নিজের শহর মনে পড়ে, তবে এখন আর একা লাগে না।
-                </div>
-            </div>
-        </div>
-
-        <!-- Unit 2, 3, 4 (খালি) -->
-        <div id="unit2" class="unit-page">
-            <h2 class="unit-title">Unit 2</h2>
-            <p>শীঘ্রই আসছে...</p>
-        </div>
-        <div id="unit3" class="unit-page">
-            <h2 class="unit-title">Unit 3</h2>
-            <p>শীঘ্রই আসছে...</p>
-        </div>
-        <div id="unit4" class="unit-page">
-            <h2 class="unit-title">Unit 4</h2>
-            <p>শীঘ্রই আসছে...</p>
-        </div>
-
-    </div>
-
-    <script>
-        // ট্যাব পরিবর্তন করার ফাংশন
-        function openUnit(unitId, btn) {
-            var pages = document.getElementsByClassName("unit-page");
-            for (var i = 0; i < pages.length; i++) { pages[i].classList.remove("active"); }
-            var tabs = document.getElementsByClassName("tab-btn");
-            for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
-            document.getElementById(unitId).classList.add("active");
-            btn.classList.add("active");
-        }
-
-        // QR কোড তৈরি করার ফাংশন
-        window.onload = function() {
-            // QR কোডে সরাসরি GitHub Pages ওয়েবসাইটের লিংক থাকবে
-            var qrCodeUrl = "https://sa01712256100-beep.github.io/Kiip-4-book-new/";
-            new QRCode(document.getElementById("qrcode"), {
-                text: qrCodeUrl,
-                width: 100,
-                height: 100,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        };
-    </script>
+    renderBook();
+    window.addEventListener("load", () => {
+      const target = document.getElementById("qrcode");
+      if (window.QRCode) {
+        new QRCode(target, { text: websiteUrl, width: 100, height: 100, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+      } else {
+        target.innerHTML = '<a href="' + websiteUrl + '">ওয়েবসাইট খুলুন</a>';
+      }
+    });
+  </script>
 </body>
 </html>
