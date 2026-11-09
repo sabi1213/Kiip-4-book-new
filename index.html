@@ -1,626 +1,154 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KIIP 4급 - সম্পূর্ণ বই</title>
-  <style>
-    :root{
-      --primary:#0d47a1;
-      --primary-dark:#09306f;
-      --secondary:#1565c0;
-      --accent:#ffeb3b;
-      --danger:#d32f2f;
-      --bg:#f4f7fb;
-      --card:#ffffff;
-      --soft-blue:#edf5ff;
-      --soft-yellow:#fff8db;
-      --border:#dfeaf7;
-      --text:#1f2937;
-      --muted:#5b6473;
-      --success:#2e7d32;
-    }
-
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body{
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height:1.7;
-    }
-
-    .topbar{
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color:white;
-      text-align:center;
-      padding:28px 20px 18px;
-      box-shadow:0 8px 20px rgba(15,76,168,0.12);
-    }
-
-    .topbar h1{
-      font-size: clamp(28px, 3vw, 40px);
-      margin-bottom:6px;
-    }
-
-    .topbar p{
-      opacity:0.95;
-      font-size:1rem;
-    }
-
-    .tab-container{
-      position:sticky;
-      top:0;
-      z-index:20;
-      display:flex;
-      overflow-x:auto;
-      gap:10px;
-      padding:12px 18px;
-      background:#1d5ec8;
-      border-bottom:1px solid rgba(255,255,255,0.15);
-      scrollbar-width:thin;
-    }
-
-    .tab-container::-webkit-scrollbar { height:8px; }
-    .tab-container::-webkit-scrollbar-thumb{
-      background: rgba(255,255,255,0.35);
-      border-radius:10px;
-    }
-
-    .tab-btn{
-      flex:0 0 auto;
-      background:#edf5ff;
-      color:#123d7d;
-      border:none;
-      border-radius:999px;
-      padding:10px 16px;
-      font-weight:700;
-      cursor:pointer;
-      transition:0.2s ease;
-      box-shadow:0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .tab-btn.active{
-      background:var(--accent);
-      color:#123d10;
-    }
-
-    .tab-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    .container{
-      max-width:1100px;
-      margin:24px auto 60px;
-      padding:0 14px;
-    }
-
-    .unit-page{
-      display:none;
-      background:var(--card);
-      border-radius:20px;
-      box-shadow:0 12px 34px rgba(17,24,39,0.07);
-      padding:28px 24px 34px;
-      animation: fadeIn 0.25s ease;
-    }
-
-    .unit-page.active{
-      display:block;
-    }
-
-    @keyframes fadeIn{
-      from { opacity:0; transform:translateY(8px); }
-      to { opacity:1; transform:translateY(0); }
-    }
-
-    .unit-title{
-      font-size: clamp(28px, 2.5vw, 36px);
-      color: var(--danger);
-      border-bottom: 3px solid var(--danger);
-      padding-bottom:10px;
-      margin-bottom:20px;
-    }
-
-    h3{
-      font-size:1.3rem;
-      margin-top:22px;
-      margin-bottom:10px;
-      color:var(--primary-dark);
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:10px;
-      background:white;
-    }
-
-    th, td{
-      border:1px solid var(--border);
-      padding:12px 10px;
-      text-align:left;
-      vertical-align:top;
-    }
-
-    th{
-      background:var(--soft-blue);
-      color:var(--primary-dark);
-      font-weight:700;
-    }
-
-    .box{
-      border:1px solid var(--border);
-      border-radius:14px;
-      overflow:hidden;
-      margin-top:14px;
-    }
-
-    .korean-box{
-      background: var(--soft-blue);
-      color: var(--primary);
-      padding:18px 16px;
-      border-bottom:1px solid var(--border);
-      font-weight:700;
-    }
-
-    .bangla-box{
-      background: var(--soft-yellow);
-      color:#2c2c2c;
-      padding:18px 16px;
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-      gap:16px;
-      margin-top:16px;
-    }
-
-    .card{
-      background:#f9fbff;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:14px 16px;
-    }
-
-    .card strong{
-      display:block;
-      margin-bottom:6px;
-      color: var(--primary);
-    }
-
-    .note{
-      margin-top:16px;
-      padding:12px 14px;
-      border-radius:8px;
-      background:#edf5ff;
-      border-left:4px solid var(--primary);
-      color:#1d3557;
-    }
-
-    .highlight{
-      margin-top:16px;
-      padding:12px 14px;
-      border-radius:10px;
-      border:1px solid #efdca4;
-      background:#fff7d6;
-      color:#6b4d00;
-      font-weight:700;
-    }
-
-    @media (max-width:700px){
-      .unit-page{
-        padding:20px 16px 28px;
-      }
-      .tab-btn{
-        padding:9px 14px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIIP 4급 - সম্পূর্ণ বই</title>
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; color: #333; }
+        
+        /* হেডার ও QR কোড ডিজাইন */
+        header { background-color: #0d47a1; color: white; text-align: center; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        header h1 { font-size: 24px; margin-bottom: 5px; }
+        header p { font-size: 14px; color: #bbdefb; margin-bottom: 10px;}
+        .qr-container { background: white; padding: 8px; border-radius: 10px; display: inline-block; margin-bottom: 5px;}
+        
+        .tab-container { display: flex; overflow-x: auto; background-color: #1565c0; padding: 10px; white-space: nowrap; }
+        .tab-btn { background-color: #e3f2fd; color: #0d47a1; border: none; padding: 10px 15px; margin-right: 8px; border-radius: 20px; font-weight: bold; }
+        .tab-btn.active { background-color: #ffeb3b; }
+        
+        .content-container { padding: 20px; max-width: 900px; margin: 0 auto; background: white; min-height: 80vh; }
+        .unit-page { display: none; }
+        .unit-page.active { display: block; }
+        
+        h2.unit-title { color: #d32f2f; border-bottom: 2px solid #d32f2f; padding-bottom: 10px; margin-bottom: 20px; font-size: 22px;}
+        h3 { margin-top: 20px; margin-bottom: 10px; color: #0d47a1; }
+        
+        .box { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; overflow: hidden; }
+        .korean-box { background-color: #f5f9ff; padding: 15px; color: #0d47a1; font-weight: bold; font-size: 16px; line-height: 1.8; border-bottom: 1px dashed #ccc;}
+        .bangla-box { background-color: #fffde7; padding: 15px; font-size: 15px; line-height: 1.8;}
+        
+        .vocab-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .vocab-table th, .vocab-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .vocab-table th { background-color: #e3f2fd; }
+        
+        .grammar-box { background-color: #fff9c4; padding: 15px; border-left: 4px solid #fbc02d; border-radius: 5px; margin-bottom: 15px;}
+        .grammar-title { color: #e65100; font-weight: bold; font-size: 16px; margin-bottom: 5px;}
+    </style>
 </head>
 <body>
 
-  <header class="topbar">
-    <h1>KIIP 4급 (কোরিয়ান ভাষা ও সংস্কৃতি)</h1>
-    <p>কোরিয়ান ভাষা ও বাংলার অর্থসহ সম্পূর্ণ বই</p>
-  </header>
-
-  <div class="tab-container" id="tabContainer"></div>
-
-  <div class="container" id="contentContainer"></div>
-
-  <script>
-    const units = [
-      {
-        id:'unit1',
-        title:'Unit 1: 한국 생활 적응',
-        subtitle:'কোরিয়ায় খাপ খাইয়ে নেওয়া',
-        vocab:[
-          ['적응하다','খাপ খাইয়ে নেওয়া'],
-          ['낯설다','অপরিচিত লাগা'],
-          ['실수하다','ভুল করা'],
-          ['초반','শুরুতে'],
-          ['익숙하다','অভ্যস্ত হওয়া']
-        ],
-        passage:{
-          ko:'저는 한국에 온 지 1년이 되었습니다. 처음에는 한국 음식이 입에 맞지 않아서 힘들었습니다. 하지만 지금은 한국 생활에 많이 적응해서 외롭지 않습니다.',
-          bn:'আমি কোরিয়ায় এসে ১ বছর হয়েছে। প্রথমে কোরিয়ান খাবার আমার মুখে লাগত না বলে কষ্ট হতো। কিন্তু এখন আমি কোরিয়ান জীবনে অনেকটা খাপ খাইয়ে নিয়েছি, তাই একা লাগে না।'
-        },
-        examples:[
-          ['한국 생활에 적응하고 있어요.','আমি কোরিয়ান জীবনে খাপ খাইয়ে নিচ্ছি।'],
-          ['처음에는 낯설었지만 점점 익숙해졌어요.','প্রথমে অচেনা লাগলেও ধীরে ধীরে অভ্যস্ত হয়ে গেছে।']
-        ]
-      },
-      {
-        id:'unit2',
-        title:'Unit 2: 고쳐야 할 생활 습관',
-        subtitle:'সংশোধন করা প্রয়োজনীয় জীবনধারা',
-        vocab:[
-          ['습관','অভ্যাস'],
-          ['고치다','সংশোধন করা'],
-          ['규칙','নিয়ম'],
-          ['늦다','দেরি হওয়া'],
-          ['청결하다','পরিষ্কার থাকা']
-        ],
-        passage:{
-          ko:'한국에서 생활할 때는 규칙을 잘 지켜야 합니다. 특히 시간에 늦지 않고, 주변을 깨끗하게 유지하는 것이 중요합니다.',
-          bn:'কোরিয়ায় জীবনযাপন করার সময় নিয়ম মেনে চলা দরকার। বিশেষ করে সময়মতো পৌঁছানো এবং চারপাশ পরিষ্কার রাখা জরুরি।'
-        },
-        examples:[
-          ['시간을 잘 지켜야 해요.','সময় মেনে চলতে হয়।'],
-          ['방을 깨끗하게 유지해요.','ঘর পরিষ্কার রাখি।']
-        ]
-      },
-      {
-        id:'unit3',
-        title:'Unit 3: 가족과 관계',
-        subtitle:'পরিবার ও সম্পর্ক',
-        vocab:[
-          ['가족','পরিবার'],
-          ['부모님','বাবা-মা'],
-          ['사랑하다','ভালোবাসা'],
-          ['도와주다','সাহায্য করা'],
-          ['걱정하다','চিন্তা করা']
-        ],
-        passage:{
-          ko:'가족은 언제나 저에게 힘이 되는 사람들입니다. 부모님께서 저를 위해 많은 것을 해주셨기 때문에 감사한 마음이 큽니다.',
-          bn:'পরিবারই হলো আমার সবচেয়ে শক্তি জোগানোর মানুষ। বাবা-মা আমাকে জন্য অনেক কিছু করেছেন, তাই কৃতজ্ঞতা অনুভূতিটা বড়।'
-        },
-        examples:[
-          ['가족과 자주 연락해요.','আমি পরিবারকে নিয়মিত যোগাযোগ করি।'],
-          ['가족을 사랑해요.','আমি পরিবারকে ভালোবাসি।']
-        ]
-      },
-      {
-        id:'unit4',
-        title:'Unit 4: 학교와 공부',
-        subtitle:'স্কুল ও পড়াশোনা',
-        vocab:[
-          ['학교','স্কুল'],
-          ['수업','ক্লাস'],
-          ['공부하다','পড়াশোনা করা'],
-          ['시험','পরীক্ষা'],
-          ['숙제','হোমওয়ার্ক']
-        ],
-        passage:{
-          ko:'저는 매일 학교에 가서 한국어를 공부합니다. 수업이 끝나면 숙제를 하고, 시험 준비도 합니다.',
-          bn:'আমি প্রতিদিন স্কুলে যাই এবং কোরিয়ান ভাষা পড়ি। ক্লাস শেষে হোমওয়ার্ক করি এবং পরীক্ষার জন্য পড়ি।'
-        },
-        examples:[
-          ['학교가 재미있어요.','স্কুলটা মজার।'],
-          ['시험을 잘 보고 싶어요.','আমি পরীক্ষা ভালো দিতে চাই।']
-        ]
-      },
-      {
-        id:'unit5',
-        title:'Unit 5: 직장과 일',
-        subtitle:'কাজ ও চাকরি',
-        vocab:[
-          ['직장','কর্মস্থল'],
-          ['일하다','কাজ করা'],
-          ['근무하다','কর্মরত থাকা'],
-          ['사장님','ব্যবসায়ী/কর্তা'],
-          ['업무','কাজ']
-        ],
-        passage:{
-          ko:'저는 회사에서 일합니다. 매일 아침 일찍 출근해서 업무를 정리하고, 팀원들과 협력합니다.',
-          bn:'আমি একটি প্রতিষ্ঠানে কাজ করি। প্রতিদিন ভোরে অফিসে যাই, কাজ সাজিয়ে রাখি এবং দলের মানুষদের সঙ্গে সহযোগিতা করি।'
-        },
-        examples:[
-          ['저는 책임감 있게 일합니다.','আমি দায়িত্বশীলভাবে কাজ করি।'],
-          ['업무가 많아요.','কাজ অনেক বেশি।']
-        ]
-      },
-      {
-        id:'unit6',
-        title:'Unit 6: 쇼핑과 소비',
-        subtitle:'কেনাকাটা ও ভোক্তা',
-        vocab:[
-          ['쇼핑','কেনাকাটা'],
-          ['가격','দাম'],
-          ['사다','কিনা'],
-          ['필요하다','চাহিদা/দরকার'],
-          ['선택하다','বেছে নেওয়া']
-        ],
-        passage:{
-          ko:'마트에 가면 필요한 물건을 고르고, 비교해서 가격이 합리적인 것을 선택합니다.',
-          bn:'মার্কেটে গেলে প্রয়োজনীয় জিনিস বেছে নিয়ে, দাম তুলনা করে যুক্তিসংগত জিনিসটি বাছি।'
-        },
-        examples:[
-          ['이 옷은 가격이 비싸요.','এই জামাটি দাম বেশি।'],
-          ['이것이 더 좋아 보여요.','এটাই বেশি ভালো দেখাচ্ছে।']
-        ]
-      },
-      {
-        id:'unit7',
-        title:'Unit 7: 음식과 식당',
-        subtitle:'খাবার ও রেস্তোরাঁ',
-        vocab:[
-          ['음식','খাবার'],
-          ['식당','রেস্তোরাঁ'],
-          ['주문하다','অর্ডার করা'],
-          ['맛있다','স্বাদযুক্ত'],
-          ['배고프다','ক্ষুধার্ত']
-        ],
-        passage:{
-          ko:'점심시간에 식당에 갔습니다. 김치찌개와 비빔밥을 주문했는데 두 메뉴 모두 맛있었습니다.',
-          bn:'দুপুরের খাবারের জন্য রেস্টুরেন্টে গিয়েছিলাম। কিমচি জিজিগে ও বিয়াম্বাপ অর্ডার করেছি, দুটোই খুবই সুস্বাদু ছিল।'
-        },
-        examples:[
-          ['배고파서 점심을 먹어요.','আমি ক্ষুধার্ত, তাই দুপুরের খাবার খাই।'],
-          ['맛있는 음식을 좋아해요.','আমি সুস্বাদু খাবার পছন্দ করি।']
-        ]
-      },
-      {
-        id:'unit8',
-        title:'Unit 8: 교통과 이동',
-        subtitle:'পরিবহন ও ভ্রমণ',
-        vocab:[
-          ['버스','বাস'],
-          ['지하철','সাবওয়ে'],
-          ['도착하다','পৌঁছানো'],
-          ['출발하다','যাত্রা শুরু'],
-          ['길','রাস্তা/পথ']
-        ],
-        passage:{
-          ko:'출근할 때는 지하철을 타고 회사에 갑니다. 지하철역이 가까워서 매우 편리합니다.',
-          bn:'কাজের জন্য বেরোতে হলে আমি সাবওয়ে নিয়ে অফিসে যাই। সাবওয়ে স্টেশন কাছাকাছি হওয়ায় খুব সুবিধা হয়।'
-        },
-        examples:[
-          ['버스를 타고 학교에 갑니다.','আমি বাসে করে স্কুলে যাই।'],
-          ['지하철이 빠르고 편리해요.','সাবওয়ে দ্রুত ও সুবিধাজনক।']
-        ]
-      },
-      {
-        id:'unit9',
-        title:'Unit 9: 날씨와 계절',
-        subtitle:'আবহাওয়া ও ঋতু',
-        vocab:[
-          ['날씨','আবহাওয়া'],
-          ['계절','ঋতু'],
-          ['비','বৃষ্টি'],
-          ['눈','তুষার'],
-          ['더위','গরম']
-        ],
-        passage:{
-          ko:'한국의 겨울은 매우 춥고, 봄에는 꽃이 많이 피어요. 비 오는 날에는 우산을 꼭 챙겨야 합니다.',
-          bn:'কোরিয়ার শীত খুব ঠান্ডা, আর বসন্তে অনেক ফুল ফোটে। বৃষ্টির দিনে ছাতা অবশ্যই নিয়ে যেতে হয়।'
-        },
-        examples:[
-          ['오늘 날씨가 좋아요.','আজ আবহাওয়া ভালো।'],
-          ['비가 많이 와요.','অনেক বৃষ্টি হচ্ছে।']
-        ]
-      },
-      {
-        id:'unit10',
-        title:'Unit 10: 하루 일과',
-        subtitle:'দৈনিক জীবন',
-        vocab:[
-          ['아침','সকাল'],
-          ['점심','দুপুর'],
-          ['저녁','সন্ধ্যা'],
-          ['잠','ঘুম'],
-          ['일어나다','উঠা']
-        ],
-        passage:{
-          ko:'저는 보통 7시에 일어나서 세면하고 아침을 먹습니다. 오후에는 공부하고 저녁에는 가족과 함께 식사를 합니다.',
-          bn:'আমি সাধারণত সকাল ৭টায় উঠে গোসল করি ও নাস্তা খাই। দুপুরে পড়াশোনা করি, আর সন্ধ্যায় পরিবার সঙ্গে খাবার খাই।'
-        },
-        examples:[
-          ['아침에 운동해요.','আমি সকালবেলা ব্যায়াম করি।'],
-          ['저녁에 쉬어요.','আমি সন্ধ্যায় বিশ্রাম নিই।']
-        ]
-      },
-      {
-        id:'unit11',
-        title:'Unit 11: 감정 표현',
-        subtitle:'আবেগ প্রকাশ',
-        vocab:[
-          ['기쁘다','খুশি হওয়া'],
-          ['슬프다','দুঃখিত/বিষণ্ণ'],
-          ['걱정하다','চিন্তা করা'],
-          ['화나다','রাগ হওয়া'],
-          ['기대하다','প্রত্যাশা করা']
-        ],
-        passage:{
-          ko:'시험 결과가 좋게 나오면 기뻐하고, 실수하면 속상해합니다. 하지만 어려운 상황에서도 차분하게 생각하는 것이 중요합니다.',
-          bn:'পরীক্ষার ফল ভালো হলে আনন্দ হয়, আর ভুল হলে মন খারাপ হয়। কিন্তু কঠিন পরিস্থিতিতেও শান্তভাবে চিন্তা করা জরুরি।'
-        },
-        examples:[
-          ['오늘은 기분이 좋아요.','আজ ভাল mood আছে।'],
-          ['걱정이 많아요.','আমি অনেক চিন্তিত।']
-        ]
-      },
-      {
-        id:'unit12',
-        title:'Unit 12: 우정과 인간관계',
-        subtitle:'বন্ধুত্ব ও সামাজিক সম্পর্ক',
-        vocab:[
-          ['친구','বন্ধু'],
-          ['대화하다','আলোচনা/কথা বলা'],
-          ['믿다','বিশ্বাস করা'],
-          ['도와주다','সাহায্য করা'],
-          ['배려하다','মনোযোগ/সম্মান দেখানো']
-        ],
-        passage:{
-          ko:'친구와의 대화는 서로를 이해하는 데 중요합니다. 어려운 상황에서 서로 도와주고 배려하면 더 좋은 관계가 만들어집니다.',
-          bn:'বন্ধুর সঙ্গে গল্প করা নিজেদেরকে বুঝতে খুব জরুরি। কঠিন সময়ে একে অপরকে সাহায্য ও যত্ন করলে সম্পর্ক আরো সুন্দর হয়।'
-        },
-        examples:[
-          ['친구를 잘 믿어요.','আমি বন্ধুকে বিশ্বাস করি।'],
-          ['친구와 자주 만나요.','আমি বন্ধুদের সঙ্গে প্রায়ই দেখা করি।']
-        ]
-      },
-      {
-        id:'unit13',
-        title:'Unit 13: 한국 문화와 전통',
-        subtitle:'কোরিয়ান সংস্কৃতি ও ঐতিহ্য',
-        vocab:[
-          ['문화','সংস্কৃতি'],
-          ['전통','ঐতিহ্য'],
-          ['명절','উৎসব'],
-          ['음식','খাবার'],
-          ['축제','উৎসব']
-        ],
-        passage:{
-          ko:'한국에는 설날, 추석 같은 전통 명절이 있습니다. 가족들이 모여 음식을 준비하고 예절을 지키는 문화가 중요합니다.',
-          bn:'কোরিয়ায় 설날 ও চুসোকের মতো ঐতিহ্যবাহী উৎসব আছে। পরিবার একত্রে খাবার তৈরি করে এবং শিষ্টাচার মেনে চলে, এটি খুব গুরুত্বপূর্ণ।'
-        },
-        examples:[
-          ['한국 문화가 재미있어요.','কোরিয়ান সংস্কৃতি মজার।'],
-          ['전통을 중요하게 생각해요.','আমি ঐতিহ্যকে গুরুত্ব দিই।']
-        ]
-      },
-      {
-        id:'unit14',
-        title:'Unit 14: 여행과 관광',
-        subtitle:'ভ্রমণ ও পর্যটন',
-        vocab:[
-          ['여행','ভ্রমণ'],
-          ['관광','পর্যটন'],
-          ['명소','দর্শনীয় স্থান'],
-          ['사진','ছবি'],
-          ['기억하다','মনে রাখা']
-        ],
-        passage:{
-          ko:'한국을 여행할 때는 서울의 경복궁, 부산의 해운대 같은 명소를 많이 가봅니다. 사진을 찍고 좋은 추억을 남깁니다.',
-          bn:'কোরিয়া ভ্রমণ করার সময় আমি সিউলের গিয়ংবক궁, 부산ের হায়ুনডে-এর মতো দর্শনীয় জায়গা দেখি। ছবি তুলে সুন্দর স্মৃতি রাখি।'
-        },
-        examples:[
-          ['한국 여행을 좋아해요.','আমি কোরিয়া ভ্রমণ পছন্দ করি।'],
-          ['멋진 사진을 찍어요.','আমি সুন্দর ছবি তুলি।']
-        ]
-      },
-      {
-        id:'unit15',
-        title:'Unit 15: 미래 계획',
-        subtitle:'ভবিষ্যৎ পরিকল্পনা',
-        vocab:[
-          ['목표','লক্ষ্য'],
-          ['계획','পরিকল্পনা'],
-          ['성공하다','সফল হওয়া'],
-          ['노력하다','পরিশ্রম করা'],
-          ['꿈','স্বপ্ন']
-        ],
-        passage:{
-          ko:'저는 한국어를 더 잘하고 싶어서 매일 공부합니다. 앞으로 한국에서 안정적으로 생활하고, 좋은 직장을 갖는 것이 제 목표입니다.',
-          bn:'আমি কোরিয়ান ভাষা আরও ভালোভাবে শিখতে চাই, তাই প্রতিদিন পড়ি। ভবিষ্যতে কোরিয়ায় স্থিতিশীলভাবে জীবনযাপন করতে চাই এবং ভালো চাকরি পেতে চাই—এটাই আমার লক্ষ্য।'
-        },
-        examples:[
-          ['저는 미래를 위해 준비하고 있어요.','আমি ভবিষ্যতের জন্য প্রস্তুতি নিচ্ছি।'],
-          ['꾸준히 노력하면 성공할 수 있어요.','নিয়মিত চেষ্টা করলে সফল হওয়া যায়।']
-        ]
-      },
-      {
-        id:'unit16',
-        title:'Unit 16: 최종 복습',
-        subtitle:'শেষ পুনরালোচনা',
-        vocab:[
-          ['복습','পুনরালোচনা'],
-          ['정리하다','সংগঠিত/গুছিয়ে রাখা'],
-          ['배우다','শিখা'],
-          ['기억하다','মনে রাখা'],
-          ['진전','অগ্রগতি']
-        ],
-        passage:{
-          ko:'이번 학습을 통해 한국어 실력이 많이 늘었습니다. 매일 조금씩 배우고 복습하면서 실력을 더욱 발전시키고 싶습니다.',
-          bn:'এই পড়াশোনার মাধ্যমে কোরিয়ান ভাষার দক্ষতা অনেক বাড়িয়ে তুলেছি। প্রতিদিন সামান্য করে শিখে ও পুনরালোচনা করে দক্ষতা আরও বাড়াতে চাই।'
-        },
-        examples:[
-          ['매일 한국어를 공부합니다.','আমি প্রতিদিন কোরিয়ান ভাষা পড়ি।'],
-          ['배운 내용을 정리합니다.','আমি শিখে নেয়া বিষয়গুলো সাজিয়ে রাখি।']
-        ]
-      }
-    ];
-
-    const tabContainer = document.getElementById('tabContainer');
-    const contentContainer = document.getElementById('contentContainer');
-
-    function renderTabs(){
-      tabContainer.innerHTML = units.map((unit, index) => `
-        <button class="tab-btn ${index === 0 ? 'active' : ''}" onclick="openUnit('${unit.id}', this)">
-          Unit ${index + 1}
-        </button>
-      `).join('');
-    }
-
-    function renderUnit(unitId){
-      const unit = units.find(u => u.id === unitId);
-      if (!unit) return;
-
-      contentContainer.innerHTML = `
-        <div class="unit-page active">
-          <h2 class="unit-title">${unit.title}</h2>
-          <p style="color: var(--muted); font-size: 1.04rem;"><strong>বাংলা:</strong> ${unit.subtitle}</p>
-
-          <h3>1. 주요 어휘</h3>
-          <table>
-            <tr><th>কোরিয়ান</th><th>বাংলা অর্থ</th></tr>
-            ${unit.vocab.map(([ko, bn]) => `
-              <tr><td>${ko}</td><td>${bn}</td></tr>
-            `).join('')}
-          </table>
-
-          <h3>2. 본문</h3>
-          <div class="box">
-            <div class="korean-box">${unit.passage.ko}</div>
-            <div class="bangla-box">${unit.passage.bn}</div>
-          </div>
-
-          <h3>3. 쉬운 예문</h3>
-          <div class="grid">
-            ${unit.examples.map(([ko, bn]) => `
-              <div class="card">
-                <strong>한국어</strong>${ko}
-                <br><br>
-                <strong>বাংলা</strong>${bn}
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="note">
-            অনুশীলন: এই ইউনিটের ৩টি নতুন বাক্য নিজে তৈরি করো।
-          </div>
-
-          <div class="highlight">
-            মূল শিক্ষা: ${unit.subtitle} সম্পর্কে বুঝতে পারলে ভাষা শেখা অনেক সহজ হয়ে যায়।
-          </div>
+    <header>
+        <h1>KIIP 4급 (কোরিয়ান ভাষা ও সংস্কৃতি)</h1>
+        <p>কোরিয়ান এবং বাংলা অর্থসহ সম্পূর্ণ পড়াশোনার গাইড</p>
+        
+        <!-- QR কোড এখানে বসবে -->
+        <div class="qr-container">
+            <div id="qrcode"></div>
         </div>
-      `;
-    }
+        <p style="font-size: 12px;">স্ক্যান করে বন্ধুদের সাথে শেয়ার করুন</p>
+    </header>
 
-    function openUnit(unitId, btn){
-      const tabs = document.getElementsByClassName('tab-btn');
-      for (let i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove('active');
-      }
-      if (btn) btn.classList.add('active');
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="openUnit('unit1', this)">Unit 1</button>
+        <button class="tab-btn" onclick="openUnit('unit2', this)">Unit 2</button>
+        <button class="tab-btn" onclick="openUnit('unit3', this)">Unit 3</button>
+        <button class="tab-btn" onclick="openUnit('unit4', this)">Unit 4</button>
+    </div>
 
-      renderUnit(unitId);
-    }
+    <div class="content-container">
+        
+        <!-- Unit 1 Complete -->
+        <div id="unit1" class="unit-page active">
+            <h2 class="unit-title">Unit 1: 한국 생활 적응 (কোরিয়ায় খাপ খাইয়ে নেওয়া)</h2>
+            
+            <h3>1. 주요 어휘 (মূল শব্দভাণ্ডার)</h3>
+            <table class="vocab-table">
+                <tr><th>কোরিয়ান</th><th>বাংলা অর্থ</th></tr>
+                <tr><td>적응하다</td><td>খাপ খাইয়ে নেওয়া / অভিযোজন করা</td></tr>
+                <tr><td>낯설다</td><td>অপরিচিত লাগা / অচেনা লাগা</td></tr>
+                <tr><td>실수하다</td><td>ভুল করা</td></tr>
+                <tr><td>문화가 다르다</td><td>সংস্কৃতি আলাদা</td></tr>
+                <tr><td>예절</td><td>শিষ্টাচার / আচরণবিধি</td></tr>
+                <tr><td>무례하다</td><td>অভদ্র / অশোভন</td></tr>
+                <tr><td>친절하다</td><td>দয়ালু / বন্ধুত্বপূর্ণ</td></tr>
+                <tr><td>외로움을 느끼다</td><td>একাকীত্ব অনুভব করা</td></tr>
+                <tr><td>힘들다</td><td>কষ্ট হওয়া / কঠিন লাগা</td></tr>
+                <tr><td>도움을 받다</td><td>সাহায্য পাওয়া</td></tr>
+                <tr><td>고향</td><td>নিজ শহর / জন্মস্থান</td></tr>
+                <tr><td>그리워하다</td><td>মিস করা / মনে পড়া</td></tr>
+            </table>
 
-    renderTabs();
-    renderUnit('unit1');
-  </script>
+            <h3>2. 주요 문법 (গুরুত্বপূর্ণ ব্যাকরণ)</h3>
+            
+            <div class="grammar-box">
+                <div class="grammar-title">১. -(으)ㄴ/는 반면에 (বিপরীত অর্থ) = যেখানে / অপরদিকে</div>
+                <p><b>ব্যবহার:</b> দুইটি বিপরীত বিষয় তুলনা করতে।</p>
+                <p><b>উদাহরণ:</b> 한국은 날씨가 건조한 <b>반면에</b> 방글라데시는 습도가 높습니다.<br>
+                <b>বাংলা:</b> কোরিয়ার আবহাওয়া শুষ্ক, <b>অপরদিকে</b> বাংলাদেশের আর্দ্রতা বেশি।</p>
+            </div>
+
+            <div class="grammar-box">
+                <div class="grammar-title">২. -기 때문에 (কারণ বোঝাতে) = যেহেতু / কারণ</div>
+                <p><b>ব্যবহার:</b> কারণ ও ফলাফল বোঝাতে।</p>
+                <p><b>উদাহরণ:</b> 한국 생활에 적응하<b>기 때문에</b> 외롭지 않습니다.<br>
+                <b>বাংলা:</b> কোরিয়ান জীবনে খাপ খাইয়ে নিয়েছি <b>যেহেতু</b>, একা লাগছে না।</p>
+            </div>
+
+            <h3>3. 본문 (মূল পাঠ)</h3>
+            <div class="box">
+                <div class="korean-box">
+                    저는 한국에 온 지 1년이 되었습니다. 처음에는 한국 음식이 입에 맞지 않아서 힘들었습니다. 그리고 한국어로 말하는 것이 낯설어서 실수도 많이 했습니다. 하지만 지금은 한국 생활에 많이 적응했습니다. 한국 사람들이 친절해서 도움을 많이 받았습니다. 가끔 고향이 그리울 때도 있지만, 이제는 외롭지 않습니다.
+                </div>
+                <div class="bangla-box">
+                    আমি কোরিয়ায় এসে ১ বছর হয়েছে। প্রথমে কোরিয়ান খাবার আমার মুখে লাগত না বলে কষ্ট হতো। আর কোরিয়ান ভাষায় কথা বলা আমার কাছে অপরিচিত লাগত, তাই অনেক ভুল করতাম। কিন্তু এখন আমি কোরিয়ান জীবনে অনেকটা খাপ খাইয়ে নিয়েছি। কোরিয়ান মানুষরা দয়ালু, তাই আমি অনেক সাহায্য পেয়েছি। মাঝে মাঝে নিজের শহর মনে পড়ে, তবে এখন আর একা লাগে না।
+                </div>
+            </div>
+        </div>
+
+        <!-- Unit 2, 3, 4 (খালি) -->
+        <div id="unit2" class="unit-page">
+            <h2 class="unit-title">Unit 2</h2>
+            <p>শীঘ্রই আসছে...</p>
+        </div>
+        <div id="unit3" class="unit-page">
+            <h2 class="unit-title">Unit 3</h2>
+            <p>শীঘ্রই আসছে...</p>
+        </div>
+        <div id="unit4" class="unit-page">
+            <h2 class="unit-title">Unit 4</h2>
+            <p>শীঘ্রই আসছে...</p>
+        </div>
+
+    </div>
+
+    <script>
+        // ট্যাব পরিবর্তন করার ফাংশন
+        function openUnit(unitId, btn) {
+            var pages = document.getElementsByClassName("unit-page");
+            for (var i = 0; i < pages.length; i++) { pages[i].classList.remove("active"); }
+            var tabs = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < tabs.length; i++) { tabs[i].classList.remove("active"); }
+            document.getElementById(unitId).classList.add("active");
+            btn.classList.add("active");
+        }
+
+        // QR কোড তৈরি করার ফাংশন
+        window.onload = function() {
+            // আপনার ওয়েবসাইটের লিংকটি অটোমেটিক নেবে
+            var qrCodeUrl = window.location.href; 
+            new QRCode(document.getElementById("qrcode"), {
+                text: qrCodeUrl,
+                width: 100,
+                height: 100,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        };
+    </script>
 </body>
 </html>
