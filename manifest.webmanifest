@@ -1,0 +1,16 @@
+{
+  "id": "./app.html",
+  "name": "KIIP 4급 বাংলা-কোরিয়ান Study Guide",
+  "short_name": "KIIP 4급",
+  "description": "KIIP Level 4-এর ১৬ অধ্যায়ের বাংলা-কোরিয়ান সহায়ক গাইড",
+  "lang": "bn",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f3f6fb",
+  "theme_color": "#0d47a1",
+  "icons": [
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
