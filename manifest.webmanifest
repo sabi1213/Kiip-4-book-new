@@ -1,8 +1,8 @@
 {
   "id": "./app.html",
-  "name": "KIIP 4급 বাংলা-কোরিয়ান Study Guide",
-  "short_name": "KIIP 4급",
-  "description": "KIIP Level 4-এর ১৬ অধ্যায়ের বাংলা-কোরিয়ান সহায়ক গাইড",
+  "name": "Sabbir — কোরিয়ান ভাষা শিখুন আরও সহজে",
+  "short_name": "Sabbir Korean",
+  "description": "KIIP Level 4-এর ১৬টি বিষয়ের বাংলা-কোরিয়ান গাইড ও লিখিত অনুশীলন",
   "lang": "bn",
   "start_url": "./app.html",
   "scope": "./",
