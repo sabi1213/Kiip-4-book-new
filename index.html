@@ -138,8 +138,8 @@
 
         // QR কোড তৈরি করার ফাংশন
         window.onload = function() {
-            // আপনার ওয়েবসাইটের লিংকটি অটোমেটিক নেবে
-            var qrCodeUrl = window.location.href; 
+            // QR কোডে সরাসরি GitHub Pages ওয়েবসাইটের লিংক থাকবে
+            var qrCodeUrl = "https://sa01712256100-beep.github.io/Kiip-4-book-new/";
             new QRCode(document.getElementById("qrcode"), {
                 text: qrCodeUrl,
                 width: 100,
