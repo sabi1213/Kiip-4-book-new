@@ -1,0 +1,13 @@
+(function(){
+  const badge=document.createElement('a');
+  badge.href='./';badge.setAttribute('aria-label','Sabbir Korean home');
+  badge.textContent='Sabbir';
+  badge.style.cssText='position:fixed;z-index:99999;top:10px;right:10px;padding:5px 13px;border:1px solid #ffffff80;border-radius:999px;background:linear-gradient(120deg,#f472b6,#a78bfa,#38bdf8,#34d399,#facc15);background-size:220% 220%;color:#101828;font:800 14px/1.4 system-ui,sans-serif;letter-spacing:.5px;text-decoration:none;box-shadow:0 3px 14px #0004;animation:sabbirHue 7s ease infinite';
+  const style=document.createElement('style');style.textContent='@keyframes sabbirHue{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}';document.head.appendChild(style);document.body.appendChild(badge);
+  const greeting='السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ';let toastTimer;
+  function showMessage(text){let n=document.getElementById('sabbir-voice-note');if(!n){n=document.createElement('div');n.id='sabbir-voice-note';n.style.cssText='position:fixed;z-index:99998;bottom:18px;left:50%;transform:translateX(-50%);max-width:90vw;padding:9px 13px;border-radius:10px;background:#10243dcc;color:white;font:13px system-ui;text-align:center';document.body.appendChild(n)}n.textContent=text;clearTimeout(toastTimer);toastTimer=setTimeout(()=>n.remove(),5000)}
+  function speakArabic(){if(!('speechSynthesis'in window)){showMessage('এই browser-এ Arabic voice সমর্থিত নয়।');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(greeting);u.lang='ar-SA';u.rate=.78;u.pitch=.82;const voices=speechSynthesis.getVoices();const arabic=voices.filter(v=>/^ar([-_]|$)/i.test(v.lang));const maleHints=/male|man|maj(e|i)d|hamza|hamed|mohammed|muhammad|abdul|tariq|tarik|naif|nayef|sami|salim|arabic.*male/i;const voice=arabic.find(v=>/^ar[-_]SA/i.test(v.lang)&&maleHints.test(v.name))||arabic.find(v=>/^ar[-_]SA/i.test(v.lang))||arabic.find(v=>maleHints.test(v.name))||arabic[0];if(voice)u.voice=voice;else showMessage('ডিভাইসে Arabic voice পাওয়া যায়নি—Arabic voice pack ইনস্টল করুন। পুরুষ কণ্ঠের নিশ্চয়তা browser দিতে পারে না।');u.onerror=()=>showMessage('Arabic voice চালু হয়নি; device-এর Arabic voice settings যাচাই করুন।');speechSynthesis.speak(u)}
+  const button=document.getElementById('hear-salam');if(button)button.addEventListener('click',speakArabic);
+  document.addEventListener('submit',e=>{if(e.target&&(/login|welcome|form/i.test(e.target.id)||e.target.querySelector('input[type=password],input[autocomplete=name]'))){setTimeout(speakArabic,180)}},true);
+  document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&/প্রবেশ|sign\s*in|log\s*in|enter app/i.test(b.textContent)&&b.type!=='submit')setTimeout(speakArabic,180)},true);
+})();
