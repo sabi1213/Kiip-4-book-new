@@ -1,5 +1,5 @@
-const CACHE_NAME = 'kiip-level4-app-v4';
-const APP_SHELL = ['./app.html', './index.html', './practice.html', './manifest.webmanifest', './icon.svg'];
+const CACHE_NAME = 'kiip-level4-app-v5';
+const APP_SHELL = ['./', './app.html', './index.html', './practice.html', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('kiip-level4-app-') && key !== CACHE_NAME).map(key => caches.delete(key))))); self.clients.claim(); });
 self.addEventListener('fetch', event => {
