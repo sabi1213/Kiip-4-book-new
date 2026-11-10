@@ -1,16 +1,14 @@
 {
   "id": "./",
-  "name": "Sabbir — কোরিয়ান ভাষা শিখুন আরও সহজে",
+  "name": "Sabbir Korean — KIIP Level 4",
   "short_name": "Sabbir Korean",
-  "description": "KIIP Level 4-এর ১৬টি বিষয়ের বাংলা-কোরিয়ান গাইড ও লিখিত অনুশীলন",
+  "description": "বাংলা ও English সহায়তায় ১৬ অধ্যায়ের Korean learning, vocabulary, quiz ও writing practice",
   "lang": "bn",
   "start_url": "./app.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#f3f6fb",
-  "theme_color": "#0d47a1",
-  "icons": [
-    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
-  ]
+  "background_color": "#f3f7fd",
+  "theme_color": "#1049a2",
+  "icons": [{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
