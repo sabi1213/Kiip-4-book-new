@@ -1,0 +1,14 @@
+/* Colorful, accessible landing-page refresh: ten jewel tones blended into a layered background. */
+body:has(.welcome){background:#101636!important;color:#fff!important}
+.welcome{background:radial-gradient(ellipse at 12% 18%,#ff4d8d80 0,transparent 36%),radial-gradient(ellipse at 88% 16%,#ff9f4380 0,transparent 32%),radial-gradient(ellipse at 85% 85%,#ffe45e70 0,transparent 35%),radial-gradient(ellipse at 12% 88%,#20d6a070 0,transparent 35%),radial-gradient(ellipse at 50% 0,#17c9ff60 0,transparent 42%),radial-gradient(ellipse at 50% 100%,#a855f770 0,transparent 42%),linear-gradient(135deg,#102653,#312e81 48%,#172554)!important;isolation:isolate;overflow:auto}
+.welcome::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(115deg,#ff4d8d16,#ff9f4318,#ffe45e14,#20d6a018,#17c9ff16,#477bff18,#a855f718,#ec489918,#14b8a618,#f9731618);background-size:300% 300%;animation:tenColorDrift 18s ease infinite}
+.welcome .card{position:relative;overflow:hidden;border:1px solid #ffffff50!important;background:linear-gradient(145deg,#ffffff22,#ffffff0b 55%,#f0abfc18)!important;backdrop-filter:blur(20px);box-shadow:0 24px 80px #02061790,0 0 35px #60a5fa24!important}
+.welcome .card::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#ff4d8d,#ff9f43,#ffe45e,#20d6a0,#17c9ff,#477bff,#a855f7,#ec4899,#14b8a6,#f97316)}
+.welcome .salam{color:#fff!important;text-shadow:0 0 18px #facc15aa,0 2px 3px #0008}
+.welcome .tag{background:linear-gradient(90deg,#ffe45e,#ffb347)!important;box-shadow:0 0 20px #ffe45e44}
+.welcome .btn{transition:transform .2s,filter .2s,box-shadow .2s}
+.welcome .btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 26px #0005}
+.welcome .btn:not(.secondary){background:linear-gradient(90deg,#ffe45e,#ffb347)!important}
+.welcome .name{border-color:#ffffff70!important;background:#10163688!important}
+@keyframes tenColorDrift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@media(prefers-reduced-motion:reduce){.welcome::before{animation:none}.welcome .btn{transition:none}}
