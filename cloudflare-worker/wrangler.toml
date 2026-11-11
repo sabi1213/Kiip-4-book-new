@@ -1,0 +1,10 @@
+name = "kiip-gemini-api"
+main = "src/index.js"
+compatibility_date = "2026-11-11"
+
+[vars]
+GEMINI_MODEL = "gemini-2.5-flash"
+ALLOWED_ORIGIN = "https://sabi1213.github.io"
+
+# Add the Google key as an encrypted secret; never put it in this file.
+# From this directory run: npx wrangler secret put GEMINI_API_KEY
