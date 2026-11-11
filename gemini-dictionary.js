@@ -1,71 +1,101 @@
 (() => {
   'use strict';
-  // Configure a server-side Gemini proxy. Never expose a Gemini API key in public client-side code.
+  // Put only a server-side Gemini proxy URL here. Never expose the Gemini API key in public client-side code.
   const GEMINI_PROXY_ENDPOINT = '';
   const view = document.getElementById('view-container');
   if (!view) return;
 
-  const sampleWords = [
-    {word:'대가족', meaning:'যৌথ পরিবার / বড় পরিবার', sentence:'우리 할머니는 대가족에서 사셨다.'},
-    {word:'핵가족', meaning:'একক পরিবার / নিউক্লিয়ার ফ্যামিলি', sentence:'도시에서는 대부분 핵가족 형태로 삽니다.'},
-    {word:'맞벌이 부부', meaning:'উভয়ই উপার্জনকারী দম্পতি', sentence:'우리는 맞벌이 부부라서 바쁘다.'},
-    {word:'고령화', meaning:'জনসংখ্যার বার্ধক্য', sentence:'한국은 고령화 사회에 진입했다.'}
-  ];
-  const tiles = document.querySelector('.quick');
-  if (tiles && !document.getElementById('gemini-dictionary-tile')) {
-    const tile = document.createElement('button'); tile.id='gemini-dictionary-tile'; tile.className='tile'; tile.type='button';
-    tile.innerHTML='<span class="tile-icon">✨</span><span><strong>Live Gemini AI Dictionary</strong><small>কোরিয়ান শব্দের বিশ্লেষণ</small></span>';
-    tile.addEventListener('click', openDictionary); tiles.appendChild(tile);
+  const $ = id => document.getElementById(id);
+  const safeVocab = () => Array.isArray(window.vocab) ? window.vocab.filter(item => item && item.word) : [];
+  const safeText = value => String(value == null ? '' : value);
+
+  const quick = document.querySelector('.quick');
+  if (quick && !$('gemini-dictionary-tile')) {
+    const tile = document.createElement('button'); tile.id='gemini-dictionary-tile'; tile.type='button'; tile.className='tile';
+    tile.innerHTML='<span class="tile-icon">✨</span><span><strong>Smart AI Dictionary</strong><small>কোরিয়ান শব্দ ও বাক্যের বিশ্লেষণ</small></span>';
+    tile.addEventListener('click', openDictionary); quick.appendChild(tile);
   }
-  const nav = document.querySelector('.bottom-inner');
-  if (nav && !document.getElementById('gemini-dictionary-nav')) {
-    const button=document.createElement('button'); button.id='gemini-dictionary-nav'; button.type='button'; button.innerHTML='<span>✨</span>AI Dictionary'; button.addEventListener('click',openDictionary); nav.appendChild(button);
+  if (quick && !$('kiip-audio-tile')) {
+    const tile=document.createElement('button'); tile.id='kiip-audio-tile'; tile.type='button'; tile.className='tile';
+    tile.innerHTML='<span class="tile-icon">🎧</span><span><strong>Audio Book</strong><small>শব্দ ও অর্থ শুনুন</small></span>';
+    tile.addEventListener('click',openAudio); quick.appendChild(tile);
   }
-  if (tiles && !document.getElementById('kiip-audiobook-tile')) {
-    const tile=document.createElement('button'); tile.id='kiip-audiobook-tile'; tile.className='tile'; tile.type='button'; tile.innerHTML='<span class="tile-icon">🎧</span><span><strong>অডিও বুক</strong><small>শব্দ ও অর্থ শুনুন</small></span>'; tile.addEventListener('click',openAudiobook); tiles.appendChild(tile);
+  if (quick && !$('kiip-exam-writing-tile')) {
+    const tile=document.createElement('button'); tile.id='kiip-exam-writing-tile'; tile.type='button'; tile.className='tile';
+    tile.innerHTML='<span class="tile-icon">📝</span><span><strong>পরীক্ষার 원고지</strong><small>প্রথম ঘর খালি রেখে অনুশীলন</small></span>';
+    tile.addEventListener('click',openExamWriting); quick.appendChild(tile);
   }
-  if (nav && !document.getElementById('kiip-audiobook-nav')) {
-    const button=document.createElement('button'); button.id='kiip-audiobook-nav'; button.type='button'; button.innerHTML='<span>🎧</span>অডিও বুক'; button.addEventListener('click',openAudiobook); nav.appendChild(button);
+  const nav=document.querySelector('.bottom-inner');
+  if(nav&&!$('gemini-dictionary-nav')){const b=document.createElement('button');b.id='gemini-dictionary-nav';b.type='button';b.innerHTML='<span>✨</span>AI Dictionary';b.addEventListener('click',openDictionary);nav.appendChild(b)}
+  if(nav&&!$('kiip-audio-nav')){const b=document.createElement('button');b.id='kiip-audio-nav';b.type='button';b.innerHTML='<span>🎧</span>অডিও';b.addEventListener('click',openAudio);nav.appendChild(b)}
+
+  function setView(title, subtitle, html, action) {
+    if(typeof window.active==='function') window.active(action||'vocab');
+    view.innerHTML=`<section class="panel"><div class="heading"><h2>${title}</h2><small>${subtitle}</small></div>${html}</section>`;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function button(label,id,cls='primary'){return `<button id="${id}" type="button" class="${cls}">${label}</button>`}
+  function openDictionary(prefill='') {
+    setView('Smart AI Korean Dictionary','শব্দ বা বাক্যাংশের বিশ্লেষণ',
+      `<p>শব্দ বা বাক্যাংশ লিখুন। পরিচিত শব্দ হলে আপনার আগের offline dictionary-এর তথ্য দেখাবে; live Gemini ফলাফলের জন্য নিরাপদ server-side endpoint configure করতে হবে।</p><div class="writer-actions"><input id="gemini-query" class="name-input" style="max-width:520px" lang="ko" placeholder="예: 대가족, 성격, 낯설다 또는 Korean বাক্য"><button id="gemini-go" class="primary">AI সার্চ</button><button id="gemini-print" class="secondary">📄 A4 / Print</button></div><div class="writer-actions" id="gemini-chips"><button class="secondary" data-word="대가족">대가족</button><button class="secondary" data-word="핵가족">핵가족</button><button class="secondary" data-word="낯설다">낯설다</button><button class="secondary" data-word="성격이 강한 바람">성격이 강한 바람</button></div><p id="gemini-status" aria-live="polite"></p><div id="gemini-results"></div><p class="disclaimer">AI-র তৈরি ব্যাখ্যা ভুল হতে পারে—বিশেষ করে idiom, Hanja ও আবহাওয়ার 표현। গুরুত্বপূর্ণ ক্ষেত্রে নির্ভরযোগ্য dictionary দিয়ে যাচাই করুন। API key এই public page-এ দেওয়া হবে না।</p>`, 'vocab');
+    const input=$('gemini-query');input.value=prefill;
+    $('gemini-go').addEventListener('click',()=>search(input.value));input.addEventListener('keydown',e=>{if(e.key==='Enter')search(input.value)});
+    $('gemini-print').addEventListener('click',printView);
+    $('gemini-chips').addEventListener('click',e=>{const b=e.target.closest('[data-word]');if(b){input.value=b.dataset.word;search(input.value)}});
+    if(prefill)search(prefill);else showOfflineWords();
+  }
+  function showOfflineWords(){
+    const results=$('gemini-results');if(!results)return;results.replaceChildren();
+    safeVocab().slice(0,8).forEach(item=>results.appendChild(makeOfflineCard(item)));
+    if(!results.childElementCount){const p=document.createElement('p');p.textContent='কোনো offline vocabulary পাওয়া যায়নি।';results.appendChild(p)}
+  }
+  function makeOfflineCard(item){
+    const article=document.createElement('article');article.className='word-card';
+    const h=document.createElement('h3');h.className='kr';h.textContent=safeText(item.word);article.appendChild(h);
+    const fields=[['বাংলা অর্থ',item.meaning],['Hanja / শব্দ বিশ্লেষণ',item.breakdown],['উদাহরণ',item.example],['অনুবাদ',item.translation]];
+    fields.forEach(([label,value])=>{if(!value)return;const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=label+': ';p.append(strong,document.createTextNode(safeText(value)));article.appendChild(p)});
+    if(item.example){const speak=document.createElement('button');speak.type='button';speak.className='secondary';speak.textContent='🔊 Korean শুনুন';speak.addEventListener('click',()=>say(safeText(item.example),'ko-KR'));article.appendChild(speak)}
+    return article;
+  }
+  function escapeHTML(value){return safeText(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  async function search(raw){
+    const query=safeText(raw).trim(),status=$('gemini-status'),results=$('gemini-results');if(!query||!status||!results)return;
+    results.replaceChildren();status.textContent='';
+    const matches=safeVocab().filter(item=>[item.word,item.meaning,item.breakdown].some(text=>safeText(text).toLocaleLowerCase().includes(query.toLocaleLowerCase())));
+    if(matches.length){matches.forEach(item=>results.appendChild(makeOfflineCard(item)));status.textContent='আপনার আগের offline dictionary থেকে ফলাফল দেখানো হয়েছে।';return;}
+    if(!GEMINI_PROXY_ENDPOINT){status.textContent='এই শব্দের offline ফল নেই। Live Gemini চালু করতে নিরাপদ server-side Gemini endpoint configure করতে হবে; আপাতত কোনো বানানো AI উত্তর দেখানো হচ্ছে না।';return;}
+    status.textContent='Gemini বিশ্লেষণ তৈরি করছে…';const go=$('gemini-go');go.disabled=true;
+    try{
+      const response=await fetch(GEMINI_PROXY_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({word:query,language:'bn',instructions:'Explain this Korean word or phrase to a Bangladeshi learner in simple Bangla. Include natural meaning and usage, word type, Hanja/etymology only if verified (state uncertainty), roots and related words, nuanced synonyms and antonyms, one natural Korean example, Bangla translation, and particle/grammar breakdown. Correct unnatural Korean phrasing explicitly; do not invent facts.'})});
+      if(!response.ok)throw new Error('request failed');const data=await response.json();const text=typeof data.text==='string'?data.text:data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('\n');if(!text)throw new Error('empty response');
+      const card=document.createElement('article');card.className='word-card';const h=document.createElement('h3');h.className='kr';h.textContent=query;const p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.textContent=text;card.append(h,p);results.appendChild(card);status.textContent='';
+    }catch(_){status.textContent='Gemini উত্তর পাওয়া যায়নি। Endpoint, server ও network configuration যাচাই করুন.'}finally{go.disabled=false}
   }
 
-  function panel(title, subtitle, body) {
-    if (typeof active === 'function') active('gemini');
-    view.innerHTML=`<section class="panel"><div class="heading"><h2>${title}</h2><small>${subtitle}</small></div>${body}</section>`;
-    window.scrollTo(0,0);
+  let audioItems=[],audioIndex=0,audioActive=false,audioRate=1,audioTimer=null;
+  function openAudio(){
+    audioItems=safeVocab().map(v=>({word:safeText(v.word),meaning:safeText(v.meaning),sentence:safeText(v.example||'')}));audioIndex=0;
+    setView('🎧 KIIP Level 4 Audio Book','কোরিয়ান শব্দ ও বাংলা অর্থ শুনুন',
+      `<div class="word-card" style="text-align:center"><h3 id="book-word" class="kr"></h3><p id="book-meaning"></p><p id="book-sentence" class="kr"></p><p id="book-progress" class="count"></p></div><div class="writer-actions"><button id="book-prev" class="secondary">⏮️ আগের</button><button id="book-play" class="primary">▶️ সব একসাথে প্লে</button><button id="book-stop" class="secondary">⏹ বন্ধ</button><button id="book-next" class="secondary">পরের ⏭️</button></div><div class="writer-actions"><span>স্পিড:</span><button class="secondary" data-rate="0.8">0.8x</button><button class="secondary" data-rate="1">1.0x</button><button class="secondary" data-rate="1.2">1.2x</button></div><div id="audio-playlist"></div>`, 'vocab');
+    if(!audioItems.length){$('audio-playlist').textContent='Offline vocabulary পাওয়া যায়নি।';return}
+    renderAudio();$('book-prev').addEventListener('click',()=>stepAudio(-1));$('book-next').addEventListener('click',()=>stepAudio(1));$('book-play').addEventListener('click',playAll);$('book-stop').addEventListener('click',stopAudio);
+    document.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>{audioRate=Number(b.dataset.rate)}));
   }
-  function openDictionary() {
-    panel('Live Gemini AI Dictionary','কোরিয়ান শব্দের বাংলা বিশ্লেষণ',
-      '<p>শব্দের ধরন, 한자/어원, মূল ধারণা, related words, synonym/antonym, ব্যবহার, উদাহরণ ও grammar breakdown।</p><div class="writer-actions"><input id="gemini-word-input" class="name-input" style="max-width:500px" lang="ko" placeholder="예: 대가족, 핵가족, 낯설다"><button id="gemini-search-button" class="primary" type="button">AI সার্চ</button><button id="gemini-pdf-button" class="secondary" type="button">📄 PDF / Print</button></div><p id="gemini-status" aria-live="polite"></p><div id="gemini-result"></div><p class="disclaimer">Live Gemini চালাতে নিরাপদ server-side proxy প্রয়োজন। Public website-এ API key রাখা নিরাপদ নয়।</p>');
-    document.getElementById('gemini-search-button').addEventListener('click',search);
-    document.getElementById('gemini-word-input').addEventListener('keydown',e=>{if(e.key==='Enter')search()});
-    document.getElementById('gemini-pdf-button').addEventListener('click',printCurrent);
+  function renderAudio(){const item=audioItems[audioIndex];if(!item)return;$('book-word').textContent=item.word;$('book-meaning').textContent=item.meaning;$('book-sentence').textContent=item.sentence;$('book-progress').textContent=`শব্দ ${audioIndex+1} / ${audioItems.length}`;const list=$('audio-playlist');list.replaceChildren();audioItems.forEach((v,i)=>{const row=document.createElement('div');row.className='qa';const p=document.createElement('p');p.textContent=`${i+1}. ${v.word} — ${v.meaning}`;const b=document.createElement('button');b.className='secondary';b.type='button';b.textContent='🔊 শুনুন';b.addEventListener('click',()=>{audioIndex=i;renderAudio();say(`${v.word}. ${v.meaning}`,'ko-KR')});row.append(p,b);list.appendChild(row)})}
+  function stepAudio(delta){if(!audioItems.length)return;audioIndex=(audioIndex+delta+audioItems.length)%audioItems.length;renderAudio()}
+  function stopAudio(){audioActive=false;clearTimeout(audioTimer);if('speechSynthesis'in window)window.speechSynthesis.cancel();if($('book-play'))$('book-play').textContent='▶️ সব একসাথে প্লে'}
+  function playAll(){if(!audioItems.length)return;if(audioActive){stopAudio();return}audioActive=true;$('book-play').textContent='⏸️ Pause';playCurrent()}
+  function playCurrent(){if(!audioActive)return;const item=audioItems[audioIndex];if(!item){stopAudio();return}renderAudio();if(!('speechSynthesis'in window)){stopAudio();return}window.speechSynthesis.cancel();const kr=new SpeechSynthesisUtterance(item.word);kr.lang='ko-KR';kr.rate=audioRate;kr.onend=()=>{if(!audioActive)return;const bn=new SpeechSynthesisUtterance(item.meaning);bn.lang='bn-BD';bn.rate=audioRate;bn.onend=()=>{if(audioActive){audioIndex++;if(audioIndex>=audioItems.length){stopAudio();return}audioTimer=setTimeout(playCurrent,700)}};window.speechSynthesis.speak(bn)};window.speechSynthesis.speak(kr)}
+  function say(text,lang){if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang||'ko-KR';utterance.rate=.9;window.speechSynthesis.speak(utterance)}
+
+  function openExamWriting(){
+    setView('원고지 100자 · পরীক্ষার অনুশীলন','প্রথম ঘর ফাঁকা, তারপর লেখা শুরু',
+      `<div class="disclaimer"><strong>পরীক্ষার অনুশীলন:</strong> অনুচ্ছেদের প্রথম ঘর ফাঁকা রেখে পরের ঘর থেকে লিখুন। ১০০টি লেখা-ঘরসহ প্রথম ফাঁকা ঘর আলাদা করে ১০১টি cell দেখানো হবে। ‘해요/합니다/습니다’ ধাঁচ পেলে সতর্কতা দেখাবে।</div><label class="label" for="exam-won-input">Korean লেখা</label><textarea id="exam-won-input" class="text-input kr" maxlength="100" placeholder="한국 생활에 잘 적응하려면..."></textarea><div class="writer-actions"><span id="exam-count" class="count">0 / 100자</span><button id="exam-save" class="primary">💾 সেভ</button><button id="exam-print" class="secondary">📄 A4 Print</button><button id="exam-clear" class="secondary">মুছুন</button></div><p id="exam-warning" class="disclaimer" hidden></p><div class="grid-wrap"><div id="exam-grid" class="wongoji"></div></div><p id="exam-save-status" aria-live="polite"></p>`, 'writing');
+    const input=$('exam-won-input'),key='kiip_exam_wonguji_v1';try{input.value=localStorage.getItem(key)||''}catch(_){};updateExamGrid();input.addEventListener('input',updateExamGrid);
+    $('exam-save').addEventListener('click',()=>{try{localStorage.setItem(key,input.value);$('exam-save-status').textContent='এই device/browser-এ সেভ হয়েছে.'}catch(_){$('exam-save-status').textContent='Browser storage-এ সেভ করা যায়নি.'}});
+    $('exam-clear').addEventListener('click',()=>{input.value='';updateExamGrid();$('exam-save-status').textContent=''});$('exam-print').addEventListener('click',printView);
   }
-  async function search() {
-    const input=document.getElementById('gemini-word-input'), status=document.getElementById('gemini-status'), result=document.getElementById('gemini-result'), word=input.value.trim();
-    result.replaceChildren(); if(!word){status.textContent='একটি Korean শব্দ লিখুন।';return;}
-    if(!GEMINI_PROXY_ENDPOINT){status.textContent='Live Gemini এখনো চালু হয়নি। নিরাপদ server-side Gemini proxy endpoint configure করতে হবে; API key browser-এ দেওয়া যাবে না।';return;}
-    status.textContent='Gemini বিশ্লেষণ তৈরি করছে…'; const button=document.getElementById('gemini-search-button');button.disabled=true;
-    try {
-      const response=await fetch(GEMINI_PROXY_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({word,language:'bn',instructions:'Explain this Korean word to a Bangladeshi learner in simple Bangla. Include word type (Sino-Korean/native/loanword), Hanja and etymology where relevant, core concept, related roots and word family, nuanced synonyms and antonyms, natural native usage, one natural Korean sentence with Bangla translation, and particle/grammar breakdown. Clearly say when etymology is uncertain.'})});
-      if(!response.ok)throw new Error('AI request failed');const data=await response.json();const text=typeof data.text==='string'?data.text:data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('\n');if(!text)throw new Error('Empty AI response');
-      const card=document.createElement('article');card.className='word-card';const h=document.createElement('h3');h.className='kr';h.textContent=word;const p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.textContent=text;card.append(h,p);result.replaceChildren(card);status.textContent='';
-    } catch(_){status.textContent='AI উত্তর পাওয়া যায়নি। Proxy endpoint, server ও network যাচাই করুন.';} finally{button.disabled=false;}
-  }
-  let audioList=[], audioIndex=0, audioPlaying=false, audioRate=1;
-  function openAudiobook(){
-    const existing=Array.isArray(window.vocab)?window.vocab.filter(v=>v&&v.word):[];
-    audioList=existing.length?existing.map(v=>({word:v.word,meaning:v.meaning||'',sentence:v.example||''})):sampleWords;
-    audioIndex=0;
-    panel('🎧 Korean Audio Book','কোরিয়ান শব্দ ও বাংলা অর্থ ধারাবাহিকভাবে শুনুন',
-      '<div class="word-card" style="text-align:center"><h3 id="book-word" class="kr"></h3><p id="book-meaning"></p><p id="book-sentence" class="kr"></p><p id="book-count" class="count"></p></div><div class="writer-actions" style="justify-content:center"><button id="book-prev" class="secondary" type="button">⏮️ আগের</button><button id="book-play" class="primary" type="button">▶️ চালু</button><button id="book-next" class="secondary" type="button">পরের ⏭️</button></div><div class="writer-actions" style="justify-content:center"><span>স্পিড:</span><button class="secondary" data-rate="0.8" type="button">0.8x</button><button class="secondary" data-rate="1" type="button">1.0x</button><button class="secondary" data-rate="1.2" type="button">1.2x</button></div><p class="disclaimer">প্লেব্যাক বন্ধ করতে Pause চাপুন বা পেজ ছেড়ে যান। Browser-এর Korean/Bangla voice availability device অনুযায়ী ভিন্ন হতে পারে।</p>');
-    updateAudio();document.getElementById('book-play').addEventListener('click',()=>audioPlaying?stopAudio():playAudio());
-    document.getElementById('book-prev').addEventListener('click',()=>moveAudio(-1));document.getElementById('book-next').addEventListener('click',()=>moveAudio(1));
-    document.querySelectorAll('[data-rate]').forEach(b=>b.addEventListener('click',()=>{audioRate=Number(b.dataset.rate);if(audioPlaying)playAudio()}));
-  }
-  function updateAudio(){const item=audioList[audioIndex];if(!item)return;document.getElementById('book-word').textContent=item.word;document.getElementById('book-meaning').textContent=item.meaning;document.getElementById('book-sentence').textContent=item.sentence?`“${item.sentence}”`:'';document.getElementById('book-count').textContent=`শব্দ ${audioIndex+1} / ${audioList.length}`;}
-  function moveAudio(delta){audioIndex=(audioIndex+delta+audioList.length)%audioList.length;updateAudio();if(audioPlaying)playAudio();}
-  function stopAudio(){audioPlaying=false;if('speechSynthesis'in window)window.speechSynthesis.cancel();const button=document.getElementById('book-play');if(button)button.textContent='▶️ চালু';}
-  function playAudio(){if(!('speechSynthesis'in window)){document.getElementById('book-count').textContent='এই browser-এ voice পাওয়া যায়নি।';return;}audioPlaying=true;const item=audioList[audioIndex];window.speechSynthesis.cancel();const kr=new SpeechSynthesisUtterance(item.word);kr.lang='ko-KR';kr.rate=audioRate;kr.onend=()=>{if(!audioPlaying)return;const bn=new SpeechSynthesisUtterance(item.meaning);bn.lang='bn-BD';bn.rate=audioRate;bn.onend=()=>{if(audioPlaying)moveAudio(1)};window.speechSynthesis.speak(bn)};document.getElementById('book-play').textContent='⏸️ বিরতি';window.speechSynthesis.speak(kr);}
-  function printCurrent(){const result=document.getElementById('gemini-result');if(!result||!result.childElementCount){document.getElementById('gemini-status').textContent='PDF করার আগে শব্দের analysis তৈরি করুন।';return;}const style=document.createElement('style');style.id='gemini-print-style';style.textContent='@media print{body>*{visibility:hidden!important}#view-container,#view-container *{visibility:visible!important}#view-container{position:absolute!important;left:0;top:0;width:100%;margin:0!important;padding:16px!important;background:white!important;color:#111!important}.word-card{background:white!important;color:#111!important;border:1px solid #999!important;box-shadow:none!important}.word-card *{color:#111!important}}';document.head.appendChild(style);window.print();setTimeout(()=>style.remove(),1000);}
+  function updateExamGrid(){const input=$('exam-won-input');if(!input)return;const chars=Array.from(input.value).slice(0,100),grid=$('exam-grid');$('exam-count').textContent=`${chars.length} / 100자`;grid.replaceChildren();for(let i=0;i<101;i++){const cell=document.createElement('div');cell.className='cell';if(i===0){cell.classList.add('space');cell.setAttribute('aria-label','প্রথম ঘর খালি');}else cell.textContent=chars[i-1]||'';grid.appendChild(cell)}const warning=$('exam-warning'),mixed=/해요|합니다|습니다/.test(input.value);warning.hidden=!mixed;warning.textContent=mixed?"⚠️ ‘해요/합니다/습니다’ আছে—এই অনুশীলনে ‘한다’ style ব্যবহার করুন।":"✅ ‘한다’ style পরীক্ষা করুন; এটি কেবল সহজ phrase check, পূর্ণ grammar checker নয়।"}
+  function printView(){const clone=view.cloneNode(true);clone.querySelectorAll('button,textarea,input').forEach(el=>{if(el.tagName==='TEXTAREA'){const p=document.createElement('p');p.textContent=el.value;el.replaceWith(p)}else el.remove()});const win=window.open('','_blank');if(!win){window.print();return}win.document.write('<!doctype html><html lang="bn"><head><meta charset="utf-8"><title>KIIP A4 Print</title><style>body{font:14px sans-serif;color:#111;padding:20px}.panel,.word-card{border:1px solid #bbb;padding:14px;margin:10px 0}.wongoji{display:grid;grid-template-columns:repeat(10,28px);gap:2px}.cell{width:28px;height:28px;border:1px solid #ef9999;display:grid;place-items:center}.space{background:#fee2e2}</style></head><body></body></html>');win.document.body.appendChild(clone);win.document.close();win.focus();setTimeout(()=>{win.print();win.close()},350)}
   window.addEventListener('beforeunload',stopAudio);
 })();
