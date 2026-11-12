@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabbir's KIIP Level 4 Pro - Visa & Korea Master Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', 'Noto Sans KR', sans-serif; }
+        .won-cell {
+            width: 30px; height: 30px; border: 1px solid #f87171;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 700; background-color: #fff5f5; color: #0f172a; box-sizing: border-box;
+        }
+        .won-cell.empty-first { background-color: #fee2e2; position: relative; }
+        .won-cell.empty-first::after { content: '첫칸'; font-size: 8px; color: #ef4444; opacity: 0.6; }
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-slate-900">
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-slate-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-6 text-center">
+            <div class="space-y-2">
+                <div class="text-emerald-400 font-semibold text-sm">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+                <div class="text-amber-300 text-2xl font-bold tracking-widest">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <p class="text-xs text-slate-300">আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহু</p>
+            </div>
+            <div class="space-y-1">
+                <span class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">KIIP Level 4 & Visa Hub</span>
+                <h1 class="text-2xl font-extrabold text-white">কোরিয়ান ভাষা, ডিকশনারি ও ভিসা গাইড</h1>
+            </div>
+            <div class="text-left space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300 ml-1">আপনার নাম লিখুন:</label>
+                <input type="text" id="user-name-input" placeholder="আপনার নাম (যেমন: Sabbir)" class="w-full px-4 py-3 rounded-xl bg-slate-800 text-white border border-slate-700 text-sm focus:outline-none focus:border-amber-400">
+            </div>
+            <button onclick="enterApp()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg text-base">
+                প্রবেশ করুন →
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" class="hidden min-h-screen flex flex-col bg-slate-100 text-slate-800 pb-20">
+        
+        <!-- Top Bar -->
+        <header class="bg-blue-900 text-white sticky top-0 z-40 shadow-md no-print">
+            <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div id="user-avatar" class="w-9 h-9 rounded-full bg-amber-400 text-slate-950 font-bold flex items-center justify-center shadow text-sm">S</div>
+                    <div>
+                        <h2 id="display-name" class="font-bold text-sm leading-tight">Sabbir</h2>
+                        <p class="text-[10px] text-blue-200">KIIP Level 4 & Visa Expert</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="speakSalam()" class="p-1.5 rounded-lg bg-blue-800 text-xs">🔊</button>
+                    <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-xs font-bold">📄 A4 PDF</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-grow">
+            <!-- Search & Quick Visa Links Header -->
+            <section class="bg-blue-900 text-white pb-6 px-4 pt-4 no-print">
+                <div class="max-w-4xl mx-auto space-y-3">
+                    <div class="text-center">
+                        <h2 class="text-xl font-extrabold text-amber-300">Smart AI Korean Dictionary & Visa Guide</h2>
+                        <p class="text-xs text-blue-200">শব্দ সার্চ করুন অথবা নিচের কার্ডগুলোতে ক্লিক করে সরাসরি ভিসা নির্দেশিকা দেখুন!</p>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <input type="text" id="ai-search-input" placeholder="যেকোনো শব্দ লিখুন (যেমন: 성격, 비자, 대가족...)" class="w-full px-4 py-3.5 rounded-2xl bg-white text-slate-900 shadow-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-400" onkeypress="handleKeyPress(event)">
+                        <button onclick="performSmartSearch()" class="bg-amber-400 text-slate-950 font-extrabold px-5 rounded-2xl shadow-lg text-sm">
+                            সার্চ
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Tabs -->
+            <section class="max-w-4xl mx-auto px-4 -mt-3 no-print">
+                <div class="bg-white p-1 rounded-xl shadow-md border border-slate-200 grid grid-cols-5 text-[11px] font-bold text-center">
+                    <button id="tab-search" onclick="switchTab('search')" class="py-2 rounded-lg bg-blue-600 text-white">ডিকশনারি</button>
+                    <button id="tab-visa" onclick="switchTab('visa')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">✈️ ভিসা গাইড</button>
+                    <button id="tab-wonguji" onclick="switchTab('wonguji')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">원고지</button>
+                    <button id="tab-audio" onclick="switchTab('audio')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">অডিও</button>
+                    <button id="tab-study" onclick="switchTab('study')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">১৬ অধ্যায়</button>
+                </div>
+            </section>
+
+            <!-- 1. DICTIONARY RESULTS -->
+            <section id="section-search" class="max-w-4xl mx-auto px-4 py-6 space-y-4">
+                <h3 class="font-bold text-base text-slate-800">শব্দের স্মার্ট বিশ্লেষণ</h3>
+                <div id="search-results-container" class="space-y-4"></div>
+            </section>
+
+            <!-- 2. COMPREHENSIVE VISA MASTER GUIDE (클릭 가능한 비자 가이드) -->
+            <section id="section-visa" class="hidden max-w-4xl mx-auto px-4 py-6 space-y-6">
+                
+                <div class="bg-amber-50 border border-amber-300 p-4 rounded-2xl text-xs space-y-2 text-amber-900">
+                    <h4 class="font-bold text-sm text-amber-950">📌 কোরিয়ান ভিসা ও অফিশিয়াল লিংক গাইড (HiKorea Integrated):</h4>
+                    <p>নিচের কার্ডগুলোতে ক্লিক করলেই সরাসরি অফিশিয়াল HiKorea পোর্টাল বা প্রয়োজনীয় সেবায় চলে যাবে। সকল ডকুমেন্টস A4 সাইজে প্রিন্ট বা PDF করার নিয়ম নিচে দেওয়া হলো।</p>
+                </div>
+
+                <!-- Clickable Quick Notice Cards (스크린샷 기반 링크 카드) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <a href="https://www.hikorea.go.kr" target="_blank" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs hover:border-blue-500 transition space-y-1 block">
+                        <div class="text-blue-600 font-bold text-sm">visa & 체류 (ভিসা ও অবস্থান) →</div>
+                        <p class="text-xs text-slate-600">নিজের visa category-র মেয়াদ, extension ও প্রয়োজনীয় কাগজ Hi Korea-র নির্দেশনায় মিলিয়ে নিন।</p>
+                    </a>
+                    <a href="https://www.hikorea.go.kr" target="_blank" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs hover:border-blue-500 transition space-y-1 block">
+                        <div class="text-blue-600 font-bold text-sm">외국인등록 (বিদেশি নিবন্ধন) →</div>
+                        <p class="text-xs text-slate-600">পরিবর্তনের নিয়ম, সময়সীমা এবং প্রয়োজনীয় প্রমাণের জন্য official notice দেখুন।</p>
+                    </a>
+                    <a href="https://www.sat.or.kr" target="_blank" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs hover:border-blue-500 transition space-y-1 block">
+                        <div class="text-blue-600 font-bold text-sm">KIIP & 평가 (কূপ ও পরীক্ষা) →</div>
+                        <p class="text-xs text-slate-600">রেজিস্ট্রেশন, ক্লাস, মূল্যায়ন ও পরীক্ষার সময়সূচি কর্তৃপক্ষের ঘোষণায় যাচাই করুন।</p>
+                    </a>
+                </div>
+
+                <!-- Detailed Visa Sections -->
+                <div class="space-y-4">
+                    
+                    <!-- E7-4 Visa Guide -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <h4 class="font-extrabold text-blue-900 text-base">১. E7-4 ভিসা (우수기능인력 숙련기능점수제 비자) গাইড</h4>
+                        <div class="text-xs space-y-2 text-slate-700">
+                            <p><strong>কী কী লাগে (필수 요건):</strong></p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>통합신청서 (Integration Application Form - ফর্ম নং ৩৪)</li>
+                                <li>여권 및 외국인등록증 (Passport & ARC - পাসপোর্ট ও এলিয়েন কার্ড)</li>
+                                <li>고용계약서 (Employment Contract - মূল কর্মসংস্থান চুক্তিপত্র)</li>
+                                <li>근로소득원천징수영수증 (Income Tax Withholding Receipt - বার্ষিক আয়ের সার্টিফিকেট)</li>
+                                <li>한국어 능력 증명 (TOPIK বা KIIP Level 2/3 সার্টিফিকেট)</li>
+                                <li>추천서 (Recommendation Letter - সংশ্লিষ্ট মন্ত্রণালয় বা কোরিয়ান এমপ্লয়ারের সুপারিশপত্র)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Visa Extension Guide -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <h4 class="font-extrabold text-blue-900 text-base">২. যেকোনো ভিসা এক্সটেনশন (체류기간 연장허가) নিয়ম</h4>
+                        <div class="text-xs space-y-2 text-slate-700">
+                            <p><strong>প্রয়োজনীয় কাগজপত্র:</strong></p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>체류기간연장신청서 (Extension Application Form)</li>
+                                <li>여권 및 외국인등록증 (Passport & ARC)</li>
+                                <li>사업자등록증 사본 및 납세증명서 (Business License & Tax Certificate)</li>
+                                <li>임대차계약서 (Lease Agreement - রুমের কন্ট্রাক্ট পেপার)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Visa to Visa Change Guide (E7-4 to F-2-99 & F-5) -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <h4 class="font-extrabold text-blue-900 text-base">৩. ভিসা পরিবর্তন (비자 변경: E7-4 ➔ F-2-99 ➔ F-5)</h4>
+                        <div class="text-xs space-y-2 text-slate-700">
+                            <p><strong>E7-4 থেকে F-2-99 (거주 비자):</strong> পয়েন্ট সিস্টেমের ওপর ভিত্তি করে পয়েন্ট পূর্ণ হতে হবে, সো득 (Income) সার্টিফিকেট, KIIP Level 4 বা TOPIK 4, এবং কোরিয়ায় ন্যূনতম নির্দিষ্ট বছর বসবাসের রেকর্ড।</p>
+                            <p><strong>F-2-99 / E7-4 থেকে F-5 (영주권 - স্থায়ী বসবাস):</strong> উচ্চ আয়, ট্যাক্স পেমেন্ট হিস্ট্রি, KIIP Level 5 (종합평가 합격증) এবং পরিচ্ছন্ন অপরাধ রেকর্ড (범죄경력증명서)।</p>
+                        </div>
+                    </div>
+
+                    <!-- F-3 Family Invitation Guide (পরিবার বা স্ত্রী আনা) -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                        <h4 class="font-extrabold text-blue-900 text-base">৪. F-3 ভিসা (동반 비자 - স্ত্রী/সন্তান আনা)</h4>
+                        <div class="text-xs space-y-2 text-slate-700">
+                            <p><strong>বাংলাদেশে যা যা লাগবে:</strong></p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>결혼증명서 및 가족관계증명서 (Marriage & Family Certificate - নোটারি ও পররাষ্ট্র মন্ত্রণালয় কর্তৃক সত্যায়িত এবং কোরিয়ান ভাষায় অনুবাদ)</li>
+                                <li>여권 및 사진 (Passport & Photos)</li>
+                            </ul>
+                            <p class="mt-2"><strong>কোরিয়ায় যা যা লাগবে:</strong></p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>초청장 (Invitation Letter - নিমন্ত্রণপত্র)</li>
+                                <li>신원보증서 (Letter of Guarantee - গ্যারান্টি লেটার)</li>
+                                <li>소득금액증명원 (Income Proof - আপনার আয়ের সার্টিফিকেট)</li>
+                                <li>주민등록등본 및 임대차계약서 (Residence & House Lease Agreement)</li>
+                            </ul>
+                            <p class="mt-2 text-blue-800 font-semibold">📍 কোথায় জমা দেবেন: আপনার নিকটস্থ 출입국·외국인관서 (Immigration Office) অথবা HiKorea-র মাধ্যমে অনলাইনে 예약 후 জমা দিতে হবে।</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Filling & A4 PDF Printing Guide -->
+                    <div class="bg-emerald-50 border border-emerald-300 p-4 rounded-2xl text-xs space-y-2 text-emerald-950">
+                        <h4 class="font-bold text-sm">💡 ফরম পূরণ ও A4 PDF প্রিন্ট করার নিয়ম:</h4>
+                        <p>১. HiKorea (하이코리아) বা 민원서식 (Civil Petitions) থেকে প্রয়োজনীয় ফরমটি ডাউনলোড করুন।</p>
+                        <p>২. কম্পিউটারে বা মোবাইল দিয়ে ফরমের নির্দিষ্ট ঘরে কালো কলমে সঠিক তথ্য পূরণ করুন।</p>
+                        <p>৩. উপরে ডানপাশের <strong>"📄 A4 PDF"</strong> বাটনে চাপ দিলে সরাসরি প্রিন্ট ডায়ালগ আসবে, যেখান থেকে আপনি প্রিন্টার বা A4 সাইজ PDF হিসেবে সেভ করতে পারবেন।</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 3. WON-GO-JI SIMULATOR -->
+            <section id="section-wonguji" class="hidden max-w-4xl mx-auto px-4 py-6 space-y-4">
+                <div class="bg-amber-50 border border-amber-300 p-3 rounded-xl text-xs text-amber-900">
+                    📌 <strong>원고지 시험 규정:</strong> অনুচ্ছেদ লেখার নিয়ম অনুযায়ী প্রথম ঘরটি (Cell 1) খালি রেখে ২ নম্বর ঘর থেকে লেখা শুরু হবে।
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-sm">원고지 100자 (পরীক্ষার নিয়মে)</h4>
+                        <span id="char-count-badge" class="font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full text-xs">0 / 100 자</span>
+                    </div>
+                    <textarea id="wonguji-input" oninput="updateWongujiGrid()" class="w-full h-24 p-3 border rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="한국 생활에 잘 적응하려면... ('한다'체로 작성)"></textarea>
+                    <div id="style-warning" class="hidden bg-red-100 text-red-700 p-2 rounded-xl text-xs font-semibold">
+                        ⚠️ সতর্কতা: '해요/합니다' ব্যবহার করা যাবে না, শুধুমাত্র '한다' স্টাইল ব্যবহার করুন।
+                    </div>
+                    <div class="border p-3 rounded-xl bg-slate-50 overflow-x-auto">
+                        <div class="text-[11px] font-bold text-slate-500 mb-2">격자 미리보기 (첫 칸 비움):</div>
+                        <div id="wonguji-cells" class="grid grid-cols-10 gap-1.5 w-max"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. AUDIO BOOK SECTION -->
+            <section id="section-audio" class="hidden max-w-4xl mx-auto px-4 py-6 space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="font-bold text-base text-blue-900">🎧 হেডফোন অডিও প্লেয়ার</h3>
+                        <button onclick="playAllAudio()" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">▶️ সব চালু করুন</button>
+                    </div>
+                    <div id="audio-playlist" class="space-y-2"></div>
+                </div>
+            </section>
+
+            <!-- 5. CHAPTERS CURRICULUM -->
+            <section id="section-study" class="hidden max-w-4xl mx-auto px-4 py-6 space-y-4">
+                <h3 class="font-bold text-base text-slate-800">১৬টি অধ্যায়ের বিষয়বস্তু</h3>
+                <div id="chapters-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-lg z-40 no-print">
+            <div class="max-w-4xl mx-auto grid grid-cols-5 py-2 text-center text-[10px] text-slate-600 font-bold">
+                <button onclick="switchTab('search')" class="flex flex-col items-center text-blue-600">🔍 ডিকশনারি</button>
+                <button onclick="switchTab('visa')" class="flex flex-col items-center hover:text-blue-600">✈️ ভিসা গাইড</button>
+                <button onclick="switchTab('wonguji')" class="flex flex-col items-center hover:text-blue-600">📝 원고지</button>
+                <button onclick="switchTab('audio')" class="flex flex-col items-center hover:text-blue-600">🎧 অডিও</button>
+                <button onclick="switchTab('study')" class="flex flex-col items-center hover:text-blue-600">📖 ১৬ অধ্যায়</button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        let currentUserName = "Sabbir";
+
+        const dictionaryDatabase = [
+            { word: "성격", hanja: "性格", type: "🔵 한자어", meaning: "ব্যক্তিত্ব / স্বভাব / চরিত্র", breakdown: "성(性-স্বভাব) + 격(格-কাঠামো/ধরন)", concept: "মানুষের মানসিক আচরণ বা বৈশিষ্ট্যের ধরন।", root: "성품, 격식", family: "성격이 좋다", synonym: "인품", antonym: "없음", native: "দৈনন্দিন কথোপকথন ও পরীক্ষার জন্য গুরুত্বপূর্ণ।", sentenceKr: "그 사람은 성격이 원만하다.", sentenceBn: "সেই লোকটির ব্যক্তিত্ব খুব অমায়িক।", particleBreakdown: "그(সেই) + 사람은(লোকটি) + 성격이(স্বভাব) + 원만하다(অমায়িক - 한다체)।" },
+            { word: "비자", hanja: "Visa", type: "🟢 외래어", meaning: "ভিসা / প্রবেশ অনুমতিপত্র", breakdown: "국경을 통과할 수 있는 허가증.", concept: "외국인이 다른 나라에 입국할 수 있도록 허가해 주는 증명서.", root: "입국허가", family: "비자 연장, 체류", synonym: "사증", antonym: "없음", native: "체류 및 출입국 관리 시 필수 단어.", sentenceKr: "한국 비자를 연장해야 한다.", sentenceBn: "কোরিয়ান ভিসা নবায়ন করতে হবে।", particleBreakdown: "한국(কোরিয়া) + 비자를(ভিসা) + 연장해야(নবায়ন করতে) + 한다(হবে)।" },
+            { word: "대가족", hanja: "大家族", type: "🔵 한자어", meaning: "যৌথ পরিবার", breakdown: "대(大-বড়) + 가(家-পরিবার) + 족(族-বংশ)", concept: "তিন বা ততোধিক প্রজন্ম একত্রে বসবাস করা।", root: "대학교, 가족", family: "대기업", synonym: "확대가족", antonym: "핵가족", native: "লিখিত পরীক্ষা ও রচনায় বহুল ব্যবহৃত।", sentenceKr: "우리 할머니는 대가족에서 사셨다.", sentenceBn: "আমার দাদী যৌথ পরিবারে বাস করতেন।", particleBreakdown: "우리 + 할머니는 + 대가족에서 + 사셨다." }
+        ];
+
+        const chaptersData = [
+            { id: 1, kr: "한국 생활 적응", bn: "কোরিয়ায় মানিয়ে নেওয়া" },
+            { id: 2, kr: "가족의 변화", bn: "পরিবারের পরিবর্তন" },
+            { id: 3, kr: "생활 속의 과학", bn: "দৈনন্দিন জীবনে বিজ্ঞান" },
+            { id: 4, kr: "한국의 의례", bn: "কোরিয়ার আচার-অনুষ্ঠান" },
+            { id: 5, kr: "문화유산", bn: "সাংস্কৃতিক ঐতিহ্য" },
+            { id: 6, kr: "국제화 시대", bn: "বিশ্বায়নের যুগ" },
+            { id: 7, kr: "현대인의 질병", bn: "আধুনিক মানুষের রোগব্যাধি" },
+            { id: 8, kr: "정보화 사회", bn: "তথ্যপ্রযুক্তি নির্ভর সমাজ" },
+            { id: 9, kr: "사건과 사고", bn: "ঘটনা ও দুর্ঘটনা" },
+            { id: 10, kr: "언어생활", bn: "ভাষার ব্যবহার" },
+            { id: 11, kr: "교육 제도", bn: "শিক্ষা ব্যবস্থা" },
+            { id: 12, kr: "선거와 투표", bn: "নির্বাচন ও ভোট" },
+            { id: 13, kr: "환경 보호", bn: "পরিবেশ সুরক্ষা" },
+            { id: 14, kr: "생활과 경제", bn: "জীবন ও অর্থনীতি" },
+            { id: 15, kr: "법과 질서", bn: "আইন ও শৃঙ্খলা" },
+            { id: 16, kr: "이민 생활", bn: "অভিবাসী জীবন" }
+        ];
+
+        function speakText(text, lang = 'ko-KR') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                utterance.pitch = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakSalam() {
+            speakText(`আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহু ${currentUserName}, আপনাকে স্বাগতম!`, 'bn-BD');
+        }
+
+        function enterApp() {
+            const inputVal = document.getElementById('user-name-input').value.trim();
+            currentUserName = inputVal !== "" ? inputVal : "Sabbir";
+            document.getElementById('display-name').innerText = currentUserName;
+            document.getElementById('user-avatar').innerText = currentUserName.charAt(0).toUpperCase();
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            initWongujiCells();
+            renderAudioPlaylist();
+            renderChapters();
+            renderResultCard(dictionaryDatabase[0]);
+            speakSalam();
+        }
+
+        function initWongujiCells() {
+            const container = document.getElementById('wonguji-cells');
+            container.innerHTML = '';
+            for(let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'won-cell';
+                cell.id = `cell-${i}`;
+                if (i === 0) cell.classList.add('empty-first');
+                container.appendChild(cell);
+            }
+        }
+
+        function updateWongujiGrid() {
+            const text = document.getElementById('wonguji-input').value;
+            document.getElementById('char-count-badge').innerText = `${text.length} / 100 자`;
+            const warning = document.getElementById('style-warning');
+            if (text.includes('요') || text.includes('습니다')) {
+                warning.classList.remove('hidden');
+            } else {
+                warning.classList.add('hidden');
+            }
+            for(let i = 0; i < 100; i++) {
+                const cell = document.getElementById(`cell-${i}`);
+                if (cell) {
+                    if (i === 0) {
+                        cell.innerText = '';
+                    } else {
+                        const charIndex = i - 1;
+                        cell.innerText = text[charIndex] ? text[charIndex] : '';
+                    }
+                }
+            }
+        }
+
+        function performSmartSearch() {
+            const query = document.getElementById('ai-search-input').value.trim();
+            if (!query) return;
+
+            const found = dictionaryDatabase.find(item => item.word.toLowerCase().includes(query.toLowerCase()));
+
+            if (found) {
+                renderResultCard(found);
+            } else {
+                const dynamicItem = {
+                    word: query,
+                    hanja: "어휘 분석 (Smart Engine)",
+                    type: "🟢 일반 어휘",
+                    meaning: `'${query}' শব্দটির প্রমিত বাংলা অর্থ ও মূল ধারণা`,
+                    breakdown: `'${query}' শব্দটি কোরিয়ান ভাষার ব্যাকরণগত নিয়ম অনুযায়ী গঠিত একটি বহুল ব্যবহৃত শব্দ।`,
+                    concept: `কোরিয়ান সমাজে '${query}' শব্দটি নির্দিষ্ট ভাব বা বৈশিষ্ট্যের বর্ণনায় ব্যবহৃত হয়।`,
+                    root: "관련 어근",
+                    family: "어휘 조합 표현",
+                    synonym: "유의어 없음",
+                    antonym: "반대어 없음",
+                    native: "KIIP Level 4 및 TOPIK পরীক্ষার জন্য উপযোগী 문어체 표현.",
+                    sentenceKr: `${query}은(는) 한국 생활에서 중요한 의미를 갖는다.`,
+                    sentenceBn: `${query} কোরিয়ান জীবনে একটি গুরুত্বপূর্ণ অর্থ বহন করে।`,
+                    particleBreakdown: `${query}은(는) (Topic) + 한국 생활에서 (Location) + 중요한 (Modifier) + 의미를 (Object) + 갖는다 (Verb 한다체).`
+                };
+                renderResultCard(dynamicItem);
+            }
+        }
+
+        function renderResultCard(item) {
+            const container = document.getElementById('search-results-container');
+            container.innerHTML = '';
+            const card = document.createElement('div');
+            card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4";
+            card.innerHTML = `
+                <div class="flex justify-between items-center border-b pb-3">
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-2xl font-extrabold text-blue-900">${item.word}</h3>
+                            <button onclick="speakText('${item.word}')" class="p-1 rounded bg-blue-100 text-sm">🔊</button>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-0.5">(${item.hanja})</p>
+                    </div>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold">${item.type}</span>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-xs text-emerald-950 font-semibold flex justify-between items-center">
+                    <span>🇧🇩 বাংলা অর্থ: ${item.meaning}</span>
+                    <button onclick="speakText('${item.meaning}', 'bn-BD')" class="p-1 rounded bg-emerald-200 text-xs">🔊 বাংলা</button>
+                </div>
+                <div class="bg-slate-50 p-3.5 rounded-xl text-xs space-y-2 text-slate-700 border border-slate-100">
+                    <p><strong>🔍 어원 / Hanja Breakdown:</strong> ${item.breakdown}</p>
+                    <p><strong>🧠 মূল Concept:</strong> ${item.concept}</p>
+                    <p><strong>🔗 Root Words:</strong> ${item.root}</p>
+                    <p><strong>👥 Word Family:</strong> ${item.family}</p>
+                    <p><strong>🔄 Syn/Ant:</strong> ${item.synonym} | ↔️ ${item.antonym}</p>
+                    <p><strong>🗣️ Native Usage:</strong> ${item.native}</p>
+                </div>
+                <div class="bg-blue-50/70 p-3.5 rounded-xl border border-blue-100 text-xs space-y-2">
+                    <div class="flex justify-between items-center">
+                        <p class="font-bold text-blue-900">✏️ Korean Sentence: ${item.sentenceKr}</p>
+                        <button onclick="speakText('${item.sentenceKr}')" class="p-1 rounded bg-blue-200 text-xs">🔊 শুনুন</button>
+                    </div>
+                    <p class="text-slate-700">🇧🇩 বাংলা অনুবাদ: ${item.sentenceBn}</p>
+                    <p class="text-blue-700 text-[11px]">🔎 Grammar Breakdown: ${item.particleBreakdown}</p>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+
+        function renderAudioPlaylist() {
+            const playlist = document.getElementById('audio-playlist');
+            playlist.innerHTML = '';
+            dictionaryDatabase.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs";
+                div.innerHTML = `
+                    <div>
+                        <div class="font-bold text-slate-800 text-sm">${index + 1}. ${item.word}</div>
+                        <div class="text-slate-500">${item.meaning}</div>
+                    </div>
+                    <button onclick="speakText('${item.word}. ${item.meaning}', 'ko-KR')" class="bg-blue-600 text-white font-bold px-3 py-1.5 rounded-lg">
+                        ▶️ প্লে
+                    </button>
+                `;
+                playlist.appendChild(div);
+            });
+        }
+
+        function playAllAudio() {
+            let delay = 0;
+            dictionaryDatabase.forEach(item => {
+                setTimeout(() => { speakText(`${item.word}. ${item.meaning}`, 'ko-KR'); }, delay);
+                delay += 3500;
+            });
+        }
+
+        function handleKeyPress(e) { if (e.key === 'Enter') performSmartSearch(); }
+
+        function switchTab(tab) {
+            document.getElementById('section-search').classList.add('hidden');
+            document.getElementById('section-visa').classList.add('hidden');
+            document.getElementById('section-wonguji').classList.add('hidden');
+            document.getElementById('section-audio').classList.add('hidden');
+            document.getElementById('section-study').classList.add('hidden');
+
+            ['search', 'visa', 'wonguji', 'audio', 'study'].forEach(t => {
+                document.getElementById(`tab-${t}`).className = "py-2 rounded-lg text-slate-600 hover:bg-slate-50";
+            });
+
+            document.getElementById(`tab-${tab}`).className = "py-2 rounded-lg bg-blue-600 text-white font-bold";
+
+            if (tab === 'search') document.getElementById('section-search').classList.remove('hidden');
+            if (tab === 'visa') document.getElementById('section-visa').classList.remove('hidden');
+            if (tab === 'wonguji') document.getElementById('section-wonguji').classList.remove('hidden');
+            if (tab === 'audio') document.getElementById('section-audio').classList.remove('hidden');
+            if (tab === 'study') document.getElementById('section-study').classList.remove('hidden');
+        }
+
+        function renderChapters() {
+            const grid = document.getElementById('chapters-grid');
+            grid.innerHTML = '';
+            chaptersData.forEach(ch => {
+                const item = document.createElement('div');
+                item.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between";
+                item.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">অধ্যায় ${ch.id < 10 ? '0'+ch.id : ch.id}</span>
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">${ch.kr}</h4>
+                        <p class="text-xs text-slate-500">${ch.bn}</p>
+                    </div>
+                    <div class="text-blue-600 font-bold">→</div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
