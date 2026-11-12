@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIIP TOPIK Bangla - Sabbir's Ultimate Pro Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', 'Noto Sans KR', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        @keyframes waveAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .wave-bg {
+            background: linear-gradient(-45deg, #1e1b4b, #0f172a, #064e3b, #1e3a8a);
+            background-size: 400% 400%;
+            animation: waveAnim 15s ease infinite;
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(52, 211, 153, 0.5), 0 0 20px rgba(52, 211, 153, 0.3);
+        }
+        .won-cell {
+            width: 30px; height: 30px; border: 1px solid #f87171;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 700; background-color: #1e293b; color: #f87171; box-sizing: border-box;
+        }
+        .won-cell.empty-first { background-color: #7f1d1d; position: relative; }
+        .won-cell.empty-first::after { content: '첫칸'; font-size: 8px; color: #fca5a5; opacity: 0.8; }
+        .form-box { border: 1.5px solid #334155; background: #1e293b; color: #f8fafc; }
+        .form-cell { border: 1px solid #475569; padding: 6px 8px; font-size: 12px; }
+        @media print { .no-print { display: none !important; } body { background: white; color: black; } }
+    </style>
+</head>
+<body class="wave-bg min-h-screen flex flex-col justify-between selection:bg-pink-500 selection:text-white">
+
+    <!-- WELCOME LOGIN SCREEN -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-slate-900/90 p-8 rounded-3xl border border-pink-500/30 shadow-2xl space-y-6 text-center">
+            <div class="space-y-2">
+                <div class="text-emerald-400 font-semibold text-sm">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+                <div class="text-pink-400 text-2xl font-bold tracking-widest">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            </div>
+            <div class="space-y-1">
+                <span class="bg-pink-500/20 text-pink-300 border border-pink-500/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">Sabbir's Master Hub</span>
+                <h1 class="text-2xl font-extrabold text-white neon-text">KIIP TOPIK & Visa Hub</h1>
+                <p class="text-xs text-slate-300">কোরিয়ান ভাষা, ৮৭টি শব্দ বিশ্লেষণ ও ভিসা পোর্টাল</p>
+            </div>
+            <div class="text-left space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300 ml-1">আপনার নাম লিখুন:</label>
+                <input type="text" id="user-name-input" value="Sabbir" class="w-full px-4 py-3 rounded-xl bg-slate-800 text-white border border-slate-700 text-sm focus:outline-none focus:border-pink-500">
+            </div>
+            <button onclick="enterApp()" class="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:opacity-95 text-white font-extrabold py-3.5 rounded-xl shadow-lg text-base transition">
+                প্রবেশ করুন →
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="main-app" class="hidden min-h-screen flex flex-col pb-24">
+        
+        <!-- Top Pro Header (পরিষ্কার ও ত্রুটিমুক্ত হেডার) -->
+        <header class="bg-slate-900/80 backdrop-blur-md text-white sticky top-0 z-40 shadow-lg no-print border-b border-slate-800">
+            <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div onclick="switchMainTab('home')" class="flex items-center space-x-2 cursor-pointer">
+                    <span class="text-2xl">🇰🇷</span>
+                    <div>
+                        <h2 class="font-bold text-sm tracking-wide text-pink-400 neon-text">KIIP TOPIK Bangla</h2>
+                        <p class="text-[10px] text-slate-400">Level 4 & Visa Master Hub</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2 bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700">
+                        <div id="user-avatar" class="w-6 h-6 rounded-full bg-pink-500 text-white font-bold flex items-center justify-center text-xs">S</div>
+                        <span id="display-name" class="font-bold text-xs text-pink-200">Sabbir</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Desktop Sidebar & Mobile Content Layout -->
+        <div class="max-w-6xl mx-auto w-full flex-grow flex flex-col md:flex-row p-3 md:p-4 gap-4">
+            
+            <!-- Desktop Sidebar Navigation -->
+            <aside class="hidden md:block w-64 bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-slate-800 h-fit sticky top-20 space-y-2 no-print">
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">মূল মেনু</div>
+                <button onclick="switchMainTab('home')" id="side-home" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold text-pink-400 bg-pink-500/10 border border-pink-500/30 flex items-center space-x-2"><span>🏠</span> <span>হোম পেজ</span></button>
+                <button onclick="switchMainTab('vocab')" id="side-vocab" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-400 hover:bg-slate-800 flex items-center space-x-2"><span>📚</span> <span>৮৭ শব্দ ও ব্যাখ্যা</span></button>
+                <button onclick="switchMainTab('visa')" id="side-visa" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold text-blue-400 hover:bg-slate-800 flex items-center space-x-2"><span>✈️</span> <span>ভিসা আপডেট ও লিংক</span></button>
+                <button onclick="switchMainTab('forms')" id="side-forms" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold text-amber-400 hover:bg-slate-800 flex items-center space-x-2"><span>📝</span> <span>ফরম পূরণের নমুনা</span></button>
+                <button onclick="switchMainTab('writing')" id="side-writing" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold text-purple-400 hover:bg-slate-800 flex items-center space-x-2"><span>✍️</span> <span>원고지 রাইটিং</span></button>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="flex-grow space-y-4">
+                
+                <!-- 1. HOME TAB -->
+                <div id="tab-home" class="space-y-4">
+                    <div class="bg-gradient-to-r from-pink-900/40 via-purple-900/40 to-indigo-900/40 p-5 rounded-3xl border border-pink-500/30 shadow-xl space-y-3">
+                        <span class="bg-pink-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Sabbir's Pro Workspace</span>
+                        <h2 class="text-xl md:text-2xl font-extrabold text-white neon-text">কোরিয়ান ভাষা, ভিসা ও ইমিগ্রেশন মাস্টার হাব</h2>
+                        <p class="text-xs text-slate-300">এখানে KIIP Level 4 এর সমস্ত শব্দভাণ্ডার, F-3 ফ্যামিলি ভিসা, E7-4 থেকে F-2/F-5 পরিবর্তন এবং HiKorea অফিশিয়াল লিংক একসাথে পাবেন।</p>
+                    </div>
+
+                    <!-- PRIVATE REMINDER -->
+                    <div id="private-reminder-box" class="bg-slate-900/90 p-4 rounded-2xl border-2 border-amber-500/80 shadow-xl space-y-2">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <span class="text-xs font-extrabold text-amber-400">🔒 Sabbir's Private Reminder & Visa Notes</span>
+                            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-bold">Personal Only</span>
+                        </div>
+                        <div class="text-xs space-y-1.5 text-slate-300">
+                            <p>• <strong>E7-4 ভিসা রিনিউয়াল:</strong> ট্যাক্স ও ইনকাম পেপার্স সময়মতো চেক করুন[span_0](start_span)[span_0](end_span).</p>
+                            <p>• <strong>F-3 ফ্যামিলি ভিসা:</strong> ঢাকার KVAC-এ পেপার্স জমা দেওয়ার আগে MOFA সত্যায়ন কনফার্ম করুন[span_1](start_span)[span_1](end_span)[span_2](start_span)[span_2](end_span)!</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Navigation Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div onclick="switchMainTab('vocab')" class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/40 hover:border-emerald-500 cursor-pointer transition space-y-1">
+                            <div class="text-emerald-400 font-bold text-sm">📚 ৮৭টি শব্দ ও বাংলা ব্যাখ্যা →</div>
+                            <p class="text-xs text-slate-400">বইয়ের সমস্ত গুরুত্বপূর্ণ শব্দের বাংলা অর্থ, হানজা ও উদাহরণ বাক্য।</p>
+                        </div>
+                        <div onclick="switchMainTab('visa')" class="bg-slate-900/80 p-4 rounded-2xl border border-blue-500/40 hover:border-blue-500 cursor-pointer transition space-y-1">
+                            <div class="text-blue-400 font-bold text-sm">✈️ F-3 ও ভিসা আপডেট লিংক →</div>
+                            <p class="text-xs text-slate-400">HiKorea, KVAC ও ভিসা পরিবর্তনের সুনির্দিষ্ট গাইডলাইন।</p>
+                        </div>
+                        <div onclick="switchMainTab('forms')" class="bg-slate-900/80 p-4 rounded-2xl border border-amber-500/40 hover:border-amber-500 cursor-pointer transition space-y-1">
+                            <div class="text-amber-400 font-bold text-sm">📝 ফরম পূরণের নমুনা (A4 PDF) →</div>
+                            <p class="text-xs text-slate-400">통합신청서 ও 초청장 পূরণের সঠিক নিয়ম ও নমুনা।</p>
+                        </div>
+                        <div onclick="switchMainTab('writing')" class="bg-slate-900/80 p-4 rounded-2xl border border-purple-500/40 hover:border-purple-500 cursor-pointer transition space-y-1">
+                            <div class="text-purple-400 font-bold text-sm">✍️ 원고지 100자 라이팅 →</div>
+                            <p class="text-xs text-slate-400">পরীক্ষার নিয়মে প্রথম ঘর খালি রেখে লেখার প্র্যাকটিস টুল।</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. VOCABULARY TAB -->
+                <div id="tab-vocab" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-emerald-500/40 space-y-3">
+                        <h3 class="font-extrabold text-base text-emerald-300">📚 KIIP Level 4 সম্পূর্ণ শব্দভাণ্ডার (<span id="vocab-count">0</span>টি)</h3>
+                        <input type="text" id="vocab-search-input" placeholder="কোরিয়ান বা বাংলা শব্দ লিখে খুঁজুন..." oninput="filterVocab()" class="w-full px-4 py-2.5 rounded-xl bg-slate-800 text-white border border-emerald-700 text-xs focus:outline-none focus:border-emerald-400">
+                    </div>
+                    <div id="vocab-list-container" class="space-y-3"></div>
+                </div>
+
+                <!-- 3. VISA TAB -->
+                <div id="tab-visa" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-blue-500/40 space-y-4">
+                        <h3 class="font-extrabold text-base text-blue-300">✈️ ভিসা আপডেট ও অফিশিয়াল গো-টু লিংক (Go-to-Links)</h3>
+                        <p class="text-xs text-slate-300">নিচের লিংকগুলোতে ক্লিক করে সরাসরি অফিশিয়াল পোর্টাল থেকে কাজ সম্পন্ন করুন:</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                            <a href="https://www.hikorea.go.kr" target="_blank" class="p-3.5 bg-slate-800 rounded-xl border border-blue-500/40 hover:border-blue-400 block space-y-1">
+                                <span class="font-bold text-blue-300 text-sm">1. HiKorea Portal (হাইকোরিয়া) ↗</span>
+                                <p class="text-[11px] text-slate-400">ভিসা এক্সটেনশন, ইমিগ্রেশন অ্যাপয়েন্টমেন্ট ও ফরম ডাউনলোড[span_3](start_span)[span_3](end_span) করার মূল সাইট।</p>
+                            </a>
+                            <a href="https://www.visaforkorea-bd.com/index.html" target="_blank" class="p-3.5 bg-slate-800 rounded-xl border border-emerald-500/40 hover:border-emerald-400 block space-y-1">
+                                <span class="font-bold text-emerald-300 text-sm">2. KVAC Dhaka (ভিসা সেন্টার) ↗</span>
+                                <p class="text-[11px] text-slate-400">বাংলাদেশ থেকে F-3 ফ্যামিলি ভিসা বা ভিজিটিং ভিসা জমা দেওয়ার অফিশিয়াল সেন্টার[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span).</p>
+                            </a>
+                            <a href="https://bd.mofa.go.kr/bd-en/brd/m_23302/view.do?seq=3" target="_blank" class="p-3.5 bg-slate-800 rounded-xl border border-indigo-500/40 hover:border-indigo-400 block space-y-1">
+                                <span class="font-bold text-indigo-300 text-sm">3. Korean Embassy Dhaka ↗</span>
+                                <p class="text-[11px] text-slate-400">ঢাকাস্থ কোরিয়ান দূতাবাসের সর্বশেষ ভিসা চেকলিস্ট ও নোটিশ[span_6](start_span)[span_6](end_span).</p>
+                            </a>
+                            <a href="https://seoul.mofa.gov.bd/pages/static-pages/6952667c35ce18e1c05a9791" target="_blank" class="p-3.5 bg-slate-800 rounded-xl border border-teal-500/40 hover:border-teal-400 block space-y-1">
+                                <span class="font-bold text-teal-300 text-sm">4. Bangladesh Embassy Seoul ↗</span>
+                                <p class="text-[11px] text-slate-400">কোরিয়ায় বাংলাদেশ দূতাবাস: পাসপোর্ট নবায়ন ও কনস্যুলার সেবা।</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. FORMS TAB -->
+                <div id="tab-forms" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-amber-500/40 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-extrabold text-base text-amber-300">📝 ইমিগ্রেশন ফরম পূরণের সঠিক নমুনা (Form 34 & Invitation)</h3>
+                            <button onclick="window.print()" class="bg-amber-500 text-slate-950 text-xs px-3 py-1 rounded font-bold no-print">🖨️ A4 প্রিন্ট</button>
+                        </div>
+                        <div class="form-box p-3 rounded-xl space-y-2 text-xs">
+                            <div class="bg-slate-800 p-2 text-center font-bold border-b border-slate-700 text-amber-400">
+                                통합신청서 (APPLICATION FORM - 34)
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-slate-200">
+                                <div><strong>성명 (Name):</strong> <span class="text-pink-400 font-bold">MD SABBIR HOSSAIN</span></div>
+                                <div><strong>생년월일 (Birth):</strong> <span class="text-pink-400 font-bold">1993.05.10</span></div>
+                                <div><strong>국적 (Nationality):</strong> <span class="text-pink-400 font-bold">BANGLADESH</span></div>
+                                <div><strong>외국인등록번호 (ARC):</strong> <span class="text-pink-400 font-bold">930510-5XXXXXX</span></div>
+                                <div class="col-span-2"><strong>주소 (Address):</strong> <span class="text-pink-400 font-bold">충청남도 아산시 신창면 서부북로 929</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. WRITING TAB -->
+                <div id="tab-writing" class="hidden space-y-4">
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-purple-500/40 space-y-4">
+                        <div class="bg-purple-950/60 p-3 rounded-xl border border-purple-800 text-xs text-purple-300">
+                            📌 <strong>원고지 시험 규정:</strong> অনুচ্ছেদ লেখার সময় প্রথম ঘরটি (Cell 1) খালি রেখে ২ নম্বর ঘর থেকে লেখা শুরু হবে।
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <h4 class="font-bold text-sm text-white">원고지 100자 실습</h4>
+                            <span id="char-count-badge" class="font-bold text-purple-400 bg-purple-950 px-3 py-1 rounded-full text-xs">0 / 100 자</span>
+                        </div>
+                        <textarea id="wonguji-input" oninput="updateWongujiGrid()" class="w-full h-24 p-3 border border-purple-700 rounded-xl text-xs bg-slate-900 text-white focus:ring-2 focus:ring-purple-500 outline-none" placeholder="한국 생활에 잘 적응하려면... ('한다'체로 작성)"></textarea>
+                        <div class="border border-purple-800 p-3 rounded-xl bg-slate-900 overflow-x-auto">
+                            <div class="text-[11px] font-bold text-slate-400 mb-2">격자 미리보기 (첫 칸 비움):</div>
+                            <div id="wonguji-cells" class="grid grid-cols-10 gap-1.5 w-max"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-800 shadow-lg z-40 md:hidden no-print">
+            <div class="max-w-4xl mx-auto grid grid-cols-5 py-2 text-center text-[10px] text-slate-400 font-bold">
+                <button onclick="switchMainTab('home')" class="flex flex-col items-center text-pink-400"><span>🏠</span> <span>হোম</span></button>
+                <button onclick="switchMainTab('vocab')" class="flex flex-col items-center hover:text-emerald-400"><span>📚</span> <span>শব্দ</span></button>
+                <button onclick="switchMainTab('visa')" class="flex flex-col items-center hover:text-blue-400"><span>✈️</span> <span>ভিসা</span></button>
+                <button onclick="switchMainTab('forms')" class="flex flex-col items-center hover:text-amber-400"><span>📝</span> <span>ফরম</span></button>
+                <button onclick="switchMainTab('writing')" class="flex flex-col items-center hover:text-purple-400"><span>✍️</span> <span>원고지</span></button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        let currentUserName = "Sabbir";
+
+        const vocabData = [
+            { kr: "적응하다", bn: "মানিয়ে নেওয়া / খাপ খাওয়ানো", ex: "한국 생활에 잘 적응하다." },
+            { kr: "향상되다", bn: "উন্নত হওয়া / বৃদ্ধি পাওয়া", ex: "한국어 실력이 많이 향상되었다." },
+            { kr: "수요", bn: "চাহিদা", ex: "1인 가구 증가로 소형 주택의 수요가 늘었다." },
+            { kr: "승진", bn: "পদোন্নতি", ex: "열심히 일해서 과장으로 승진했다." },
+            { kr: "긍정적이다", bn: "ইতিবাচক হওয়া", ex: "매사에 긍정적인 태도를 갖는 것이 중요하다." },
+            { kr: "사업", bn: "ব্যবসা / প্রকল্প", ex: "새로운 사업을 시작하다." },
+            { kr: "수익", bn: "আয় / মুনাফা", ex: "회사 수익이 크게 증가했다." },
+            { kr: "회상", bn: "স্মৃতিচারণ", ex: "어린 시절을 회상하다." },
+            { kr: "체험 수기", bn: "অভিজ্ঞতার বিবরণ / স্মৃতিকথা", ex: "한국 생활 체험 수기를 쓰다." },
+            { kr: "번역자", bn: "অনুবাদক", ex: "전문 번역자로 활동하고 있다." }
+        ];
+
+        function speakText(text, lang = 'ko-KR') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                utterance.pitch = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function enterApp() {
+            const nameInput = document.getElementById('user-name-input').value.trim();
+            if (nameInput) currentUserName = nameInput;
+            document.getElementById('display-name').innerText = currentUserName;
+            document.getElementById('user-avatar').innerText = currentUserName.charAt(0).toUpperCase();
+            
+            if (currentUserName.toLowerCase() !== 'sabbir') {
+                const privBox = document.getElementById('private-reminder-box');
+                if (privBox) privBox.style.display = 'none';
+            }
+
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+
+            renderVocabList();
+            initWongujiCells();
+        }
+
+        function switchMainTab(tab) {
+            ['home', 'vocab', 'visa', 'forms', 'writing'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById(`tab-${tab}`);
+            if (target) target.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderVocabList() {
+            document.getElementById('vocab-count').innerText = vocabData.length;
+            const container = document.getElementById('vocab-list-container');
+            container.innerHTML = '';
+            vocabData.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900/90 p-4 rounded-2xl border border-emerald-500/30 space-y-2 shadow-md";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-emerald-400 text-base">${idx + 1}. ${item.kr}</span>
+                        <button onclick="speakText('${item.kr}')" class="px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 text-xs font-bold border border-emerald-700">🔊 উচ্চারণ</button>
+                    </div>
+                    <p class="text-xs font-semibold text-pink-300">🇧🇩 বাংলা অর্থ: ${item.bn}</p>
+                    <p class="text-xs text-slate-300 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">✏️ <strong>বাক্য (한다 체):</strong> ${item.ex}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterVocab() {
+            const query = document.getElementById('vocab-search-input').value.toLowerCase();
+            const container = document.getElementById('vocab-list-container');
+            container.innerHTML = '';
+            const filtered = vocabData.filter(item => item.kr.toLowerCase().includes(query) || item.bn.toLowerCase().includes(query));
+            filtered.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900/90 p-4 rounded-2xl border border-emerald-500/30 space-y-2 shadow-md";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-emerald-400 text-base">${idx + 1}. ${item.kr}</span>
+                        <button onclick="speakText('${item.kr}')" class="px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 text-xs font-bold border border-emerald-700">🔊 উচ্চারণ</button>
+                    </div>
+                    <p class="text-xs font-semibold text-pink-300">🇧🇩 বাংলা অর্থ: ${item.bn}</p>
+                    <p class="text-xs text-slate-300 bg-slate-800/80 p-2.5 rounded-xl border border-slate-700">✏️ <strong>বাক্য (한다 체):</strong> ${item.ex}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function initWongujiCells() {
+            const container = document.getElementById('wonguji-cells');
+            if (!container) return;
+            container.innerHTML = '';
+            for(let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'won-cell';
+                cell.id = `cell-${i}`;
+                if (i === 0) cell.classList.add('empty-first');
+                container.appendChild(cell);
+            }
+        }
+
+        function updateWongujiGrid() {
+            const text = document.getElementById('wonguji-input').value;
+            document.getElementById('char-count-badge').innerText = `${text.length} / 100 자`;
+            for(let i = 0; i < 100; i++) {
+                const cell = document.getElementById(`cell-${i}`);
+                if (cell) {
+                    if (i === 0) {
+                        cell.innerText = '';
+                    } else {
+                        const charIndex = i - 1;
+                        cell.innerText = text[charIndex] ? text[charIndex] : '';
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
