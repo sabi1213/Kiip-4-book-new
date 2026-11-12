@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabbir's KIIP Level 4 & Korea Visa Master Hub</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', 'Noto Sans KR', sans-serif; }
+        .won-cell {
+            width: 30px; height: 30px; border: 1px solid #f87171;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 700; background-color: #fff5f5; color: #0f172a; box-sizing: border-box;
+        }
+        .won-cell.empty-first { background-color: #fee2e2; position: relative; }
+        .won-cell.empty-first::after { content: '첫칸'; font-size: 8px; color: #ef4444; opacity: 0.7; }
+        .form-box { border: 1.5px solid #334155; background: #ffffff; }
+        .form-cell { border: 1px solid #64748b; padding: 6px 8px; font-size: 12px; }
+        @media print { .no-print { display: none !important; } body { background: white; } }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-slate-900">
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" class="fixed inset-0 z-50 bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-slate-900/90 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-6 text-center">
+            <div class="space-y-2">
+                <div class="text-emerald-400 font-semibold text-sm">السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</div>
+                <div class="text-amber-300 text-2xl font-bold tracking-widest">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+                <p class="text-xs text-slate-300">আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহু</p>
+            </div>
+            <div class="space-y-1">
+                <span class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">KIIP Level 4 & Korea Master Hub</span>
+                <h1 class="text-2xl font-extrabold text-white">কোরিয়ান ভাষা, ভিসা ও ফরম পূরণ গাইড</h1>
+                <p class="text-xs text-slate-400">সম্পূর্ণ শব্দভাণ্ডার • অফিশিয়াল লিংক • ফরম নমুনা • 원고지</p>
+            </div>
+            <div class="text-left space-y-1.5">
+                <label class="text-xs font-semibold text-slate-300 ml-1">আপনার নাম লিখুন:</label>
+                <input type="text" id="user-name-input" placeholder="আপনার নাম (যেমন: Sabbir)" class="w-full px-4 py-3 rounded-xl bg-slate-800 text-white border border-slate-700 text-sm focus:outline-none focus:border-amber-400">
+            </div>
+            <button onclick="enterApp()" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold py-3.5 rounded-xl shadow-lg text-base">
+                প্রবেশ করুন →
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" class="hidden min-h-screen flex flex-col bg-slate-100 text-slate-800 pb-24">
+        
+        <!-- Top Bar -->
+        <header class="bg-blue-900 text-white sticky top-0 z-40 shadow-md no-print">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div id="user-avatar" class="w-9 h-9 rounded-full bg-amber-400 text-slate-950 font-bold flex items-center justify-center shadow text-sm">S</div>
+                    <div>
+                        <h2 id="display-name" class="font-bold text-sm leading-tight">Sabbir</h2>
+                        <p class="text-[10px] text-blue-200">KIIP Level 4 & Korea Visa Guide</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="speakSalam()" class="p-1.5 rounded-lg bg-blue-800 text-xs" title="সালাম শুনুন">🔊</button>
+                    <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-xs font-bold shadow">📄 A4 PDF</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="flex-grow">
+            <!-- Search Header -->
+            <section class="bg-blue-900 text-white pb-6 px-4 pt-3 no-print">
+                <div class="max-w-5xl mx-auto space-y-3">
+                    <div class="text-center">
+                        <h2 class="text-lg sm:text-xl font-extrabold text-amber-300">KIIP 4단계 어휘 • ভিসা গাইড • ফরম নমুনা</h2>
+                        <p class="text-xs text-blue-200">যেকোনো শব্দ সার্চ করুন অথবা নিচের মেনু থেকে ভিসা ও ফরম পূরণের নমুনা দেখুন</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <input type="text" id="ai-search-input" placeholder="শব্দ খুঁজুন (যেমন: 적응하다, 고령화, 부푼 꿈, 성격...)" class="w-full px-4 py-3 rounded-2xl bg-white text-slate-900 shadow-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-400" onkeypress="handleKeyPress(event)">
+                        <button onclick="performSmartSearch()" class="bg-amber-400 text-slate-950 font-extrabold px-5 rounded-2xl shadow-lg text-sm">সার্চ</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Tabs -->
+            <section class="max-w-5xl mx-auto px-4 -mt-3 no-print">
+                <div class="bg-white p-1.5 rounded-xl shadow-md border border-slate-200 grid grid-cols-3 sm:grid-cols-6 gap-1 text-[11px] font-bold text-center">
+                    <button id="tab-vocab" onclick="switchTab('vocab')" class="py-2 rounded-lg bg-blue-600 text-white">📚 শব্দভাণ্ডার</button>
+                    <button id="tab-visa" onclick="switchTab('visa')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">✈️ ভিসা ও লিংক</button>
+                    <button id="tab-forms" onclick="switchTab('forms')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">📝 ফরম নমুনা</button>
+                    <button id="tab-wonguji" onclick="switchTab('wonguji')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">✍️ 원고지</button>
+                    <button id="tab-audio" onclick="switchTab('audio')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">🎧 অডিও বুক</button>
+                    <button id="tab-study" onclick="switchTab('study')" class="py-2 rounded-lg text-slate-600 hover:bg-slate-50">📖 ১৬ অধ্যায়</button>
+                </div>
+            </section>
+
+            <!-- 1. COMPLETE UNIQUE VOCABULARY & AI SEARCH SECTION -->
+            <section id="section-vocab" class="max-w-5xl mx-auto px-4 py-6 space-y-5">
+                <!-- Search Result Box -->
+                <div id="search-results-container" class="space-y-4"></div>
+
+                <!-- Full Unique Word List -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
+                        <div>
+                            <h3 class="font-extrabold text-base text-blue-900">📖 KIIP Level 4 সম্পূর্ণ শব্দ ও বাক্যাংশ (ডুপ্লিকেট মুক্ত)</h3>
+                            <p class="text-xs text-slate-500">আপনার দেওয়া সব শব্দ একসাথে (মোট ইউনিক শব্দ: <span id="total-word-count" class="font-bold text-blue-700">0</span>টি)</p>
+                        </div>
+                        <button onclick="window.print()" class="bg-slate-800 text-white text-xs px-3 py-1.5 rounded-lg font-bold no-print">🖨️ শব্দতালিকা প্রিন্ট</button>
+                    </div>
+                    <div id="unique-vocab-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                </div>
+            </section>
+
+            <!-- 2. VISA, EMBASSY LINKS & FOREIGN SUPPORT SECTION -->
+            <section id="section-visa" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-6">
+                
+                <!-- Official Portals & Support Links -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <h3 class="font-extrabold text-base text-blue-900 border-b pb-2">🌐 জরুরি অফিশিয়াল ওয়েবসাইট ও বিদেশি সহায়তা কেন্দ্র (ক্লিক করুন)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                        <a href="https://www.hikorea.go.kr" target="_blank" class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/50 hover:bg-blue-100 transition block space-y-1">
+                            <div class="font-extrabold text-blue-900 text-sm">1. HiKorea (하이코리아) ↗</div>
+                            <p class="text-slate-600">ভিসা এক্সটেনশন, পরিবর্তন (E7-4, F-2, F-5), ইমিগ্রেশন অ্যাপয়েন্টমেন্ট ও ফরম ডাউনলোড।</p>
+                        </a>
+                        <a href="https://www.visaforkorea-bd.com/index.html" target="_blank" class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-100 transition block space-y-1">
+                            <div class="font-extrabold text-emerald-900 text-sm">2. KVAC Dhaka (ভিসা সেন্টার) ↗</div>
+                            <p class="text-slate-600">বাংলাদেশ থেকে স্ত্রী/পরিবার (F-3) বা যেকোনো কোরিয়ান ভিসা জমা দেওয়ার অফিশিয়াল সেন্টার।</p>
+                        </a>
+                        <a href="https://bd.mofa.go.kr/bd-en/brd/m_23302/view.do?seq=3" target="_blank" class="p-3.5 rounded-xl border border-indigo-200 bg-indigo-50/50 hover:bg-indigo-100 transition block space-y-1">
+                            <div class="font-extrabold text-indigo-900 text-sm">3. Korean Embassy Dhaka ↗</div>
+                            <p class="text-slate-600">ঢাকাস্থ কোরিয়ান দূতাবাসের ভিসা চেকলিস্ট ও সাম্প্রতিক নোটিশ।</p>
+                        </a>
+                        <a href="https://seoul.mofa.gov.bd/pages/static-pages/6952667c35ce18e1c05a9791" target="_blank" class="p-3.5 rounded-xl border border-teal-200 bg-teal-50/50 hover:bg-teal-100 transition block space-y-1">
+                            <div class="font-extrabold text-teal-900 text-sm">4. Bangladesh Embassy Seoul ↗</div>
+                            <p class="text-slate-600">কোরিয়ায় বাংলাদেশ দূতাবাস: পাসপোর্ট নবায়ন, নোটারি ও কনস্যুলার সেবা।</p>
+                        </a>
+                        <a href="https://www.mygov.bd" target="_blank" class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/50 hover:bg-amber-100 transition block space-y-1">
+                            <div class="font-extrabold text-amber-900 text-sm">5. myGov Bangladesh ↗</div>
+                            <p class="text-slate-600">বাংলাদেশের জন্ম নিবন্ধন, বিবাহ সনদ ও সরকারি কাগজপত্র ভেরিফিকেশন পোর্টাল।</p>
+                        </a>
+                        <a href="https://www.liveinkorea.kr" target="_blank" class="p-3.5 rounded-xl border border-rose-200 bg-rose-50/50 hover:bg-rose-100 transition block space-y-1">
+                            <div class="font-extrabold text-rose-900 text-sm">6. Danuri (다누리 1577-1366) ↗</div>
+                            <p class="text-slate-600">বিদেশি ও অভিবাসী পরিবার সহায়তা কেন্দ্র (বাংলা ভাষায় হেল্পলাইন ও আইনি সহায়তা)।</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Detailed Visa Guides -->
+                <div class="space-y-4">
+                    <!-- F-3 Family Visa -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border-2 border-blue-600 space-y-3">
+                        <h4 class="font-extrabold text-blue-900 text-base">💍 F-3 ভিসা (동반비자 - স্ত্রী/সন্তান কোরিয়ায় আনা) — এ টু জেড গাইড</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700">
+                            <div class="bg-slate-50 p-3.5 rounded-xl border space-y-1.5">
+                                <p class="font-bold text-blue-900">🇧🇩 বাংলাদেশে যা যা প্রস্তুত করবেন:</p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><strong>নিকাহনামা ও ম্যারেজ সার্টিফিকেট:</strong> ইংরেজি অনুবাদসহ নোটারি এবং পররাষ্ট্র মন্ত্রণালয় (MOFA) কর্তৃক সত্যায়িত।</li>
+                                    <li><strong>পুলিশ ক্লিয়ারেন্স সার্টিফিকেট:</strong> স্ত্রীর নামে ইস্যুকৃত ও MOFA সত্যায়িত।</li>
+                                    <li><strong>জন্ম নিবন্ধন / এনআইডি ও পাসপোর্ট:</strong> মূল পাসপোর্ট ও সাদা ব্যাকগ্রাউন্ডের পাসপোর্ট সাইজ ছবি।</li>
+                                    <li><strong>টিবি (TB) টেস্ট রিপোর্ট:</strong> কোরিয়ান এম্বাসি নির্ধারিত হাসপাতাল থেকে যক্ষ্মা পরীক্ষার রিপোর্ট।</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-3.5 rounded-xl border space-y-1.5">
+                                <p class="font-bold text-blue-900">🇰🇷 কোরিয়া থেকে আপনি যা পাঠাবেন:</p>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><strong>초청장 (Invitation Letter):</strong> আমন্ত্রণপত্র।</li>
+                                    <li><strong>신원보증서 (Letter of Guarantee):</strong> গ্যারান্টি লেটার।</li>
+                                    <li><strong>소득금액증명원 (Income Certificate):</strong> ট্যাক্স অফিস বা HomeTax থেকে গত বছরের আয়ের প্রমাণপত্র।</li>
+                                    <li><strong>재직증명서 ও 사업자등록증:</strong> কোম্পানির চাকরির সনদ ও ব্যবসার লাইসেন্স কপি।</li>
+                                    <li><strong>임대차계약서 (House Lease Contract):</strong> বাসা ভাড়ার চুক্তিপত্র এবং পাসপোর্ট/ARC কপি।</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs text-emerald-950">
+                            <strong>📍 কোথায় জমা দেবেন:</strong> কোরিয়া থেকে কাগজগুলো DHL/EMS-এ বাংলাদেশে পাঠানোর পর, আপনার স্ত্রী ঢাকার <strong>KVAC (www.visaforkorea-bd.com)</strong>-এ অ্যাপয়েন্টমেন্ট নিয়ে সরাসরি কাগজপত্র জমা দেবেন।
+                        </div>
+                    </div>
+
+                    <!-- E7-4, F-2-99, F-5 & Extension -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-2">
+                            <h4 class="font-extrabold text-blue-900 text-sm">📌 E7-4 ভিসা (숙련기능점수제) ও এক্সটেনশন</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><strong>통합신청서 (ফর্ম ৩৪):</strong> আবেদনপত্র।</li>
+                                <li><strong>고용계약서 ও 재직증명서:</strong> মূল চুক্তিপত্র ও চাকরির প্রমাণপত্র।</li>
+                                <li><strong>소득금액증명원:</strong> বার্ষিক আয়ের সার্টিফিকেট (ট্যাক্স অফিস)।</li>
+                                <li><strong>한국어 능력:</strong> KIIP বা TOPIK সার্টিফিকেট।</li>
+                                <li><strong>고용추천서:</strong> কোম্পানির সুপারিশপত্র (প্রযোজ্য ক্ষেত্রে)।</li>
+                                <li><strong>জমা:</strong> নির্ধারিত 출입국·외국인관서 (ইমিগ্রেশন অফিস)।</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-2">
+                            <h4 class="font-extrabold text-blue-900 text-sm">📌 ভিসা পরিবর্তন (E7-4 ➔ F-2-99 ➔ F-5)</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-700">
+                                <li><strong>E7-4 ➔ F-2-99 (거주비자):</strong> পয়েন্ট সিস্টেমে নির্ধারিত পয়েন্ট, KIIP 4단계 বা TOPIK 4급, নির্দিষ্ট বার্ষিক আয় এবং বসবাসের মেয়াদ।</li>
+                                <li><strong>F-2-99 / E7-4 ➔ F-5 (영주권):</strong> GNI দ্বিগুণ বা নির্ধারিত উচ্চ আয়, KIIP 5단계 (종합평가 합격증), এবং বাংলাদেশ ও কোরিয়ার পুলিশ ক্লিয়ারেন্স (범죄경력증명서)।</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. EXACT FORM SAMPLE SECTION (হুবহু ফরম পূরণের নমুনা - বাংলা ও কোরিয়ান) -->
+            <section id="section-forms" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-6">
+                <div class="bg-amber-50 border border-amber-300 p-4 rounded-2xl text-xs space-y-1 text-amber-950">
+                    <h4 class="font-bold text-sm">📝 ইমিগ্রেশন ফরম পূরণের হুবহু নমুনা (Sample Form Guide)</h4>
+                    <p>নিচে ইমিগ্রেশনের আসল <strong>통합신청서 (ফর্ম নং ৩৪)</strong> এবং <strong>초청장 (আমন্ত্রণপত্র)</strong>-এর হুবহু ঘর দেখানো হলো। লাল রঙের লেখাগুলো নমুনা হিসেবে দেওয়া হয়েছে—আপনি প্রিন্ট করে কালো কলমে নিজের তথ্য এভাবে লিখবেন।</p>
+                </div>
+
+                <!-- Sample 1: 통합신청서 (Integration Application Form No. 34) -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-300 space-y-3 overflow-x-auto">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-extrabold text-blue-900 text-sm">নমুনা ১: 통합신청서 (신고서) - [별지 제34호 서식] (ভিসা আবেদন/এক্সটেনশন/পরিবর্তন ফরম)</h4>
+                        <button onclick="window.print()" class="bg-blue-600 text-white text-xs px-3 py-1 rounded font-bold no-print">🖨️ A4 প্রিন্ট</button>
+                    </div>
+
+                    <div class="form-box min-w-[600px] text-slate-900">
+                        <div class="bg-slate-200 p-2 text-center font-bold border-b border-slate-500 text-sm">
+                            통 합 신 청 서 (신 고 서) / APPLICATION FORM (REPORT FORM)
+                        </div>
+                        
+                        <!-- Checkboxes -->
+                        <div class="p-2.5 border-b border-slate-500 text-xs space-y-1 bg-slate-50">
+                            <p class="font-bold text-blue-800">▶ যে কাজের জন্য আবেদন করছেন সেটিতে টিক (✓) দিন:</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <span>[ ] 외국인등록 (এলিয়েন রেজিস্ট্রেশন)</span>
+                                <span>[✓] 체류기간 연장허가 (ভিসা এক্সটেনশন)</span>
+                                <span>[✓] 체류자격 변경허가 (ভিসা পরিবর্তন E7-4/F2/F5)</span>
+                            </div>
+                        </div>
+
+                        <!-- Personal Info Grid -->
+                        <table class="w-full border-collapse text-xs">
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100 w-1/4">성명 (Full Name)<br><span class="text-[10px] text-slate-500">পাসপোর্ট অনুযায়ী ইংরেজি বড় হাতের অক্ষরে</span></td>
+                                <td class="form-cell w-1/4 text-red-600 font-bold">성 (Surname): HOSSAIN<br>명 (Given Name): MD SABBIR</td>
+                                <td class="form-cell font-bold bg-slate-100 w-1/4">생년월일 (Date of Birth)<br><span class="text-[10px] text-slate-500">জন্ম তারিখ (বছর/মাস/দিন)</span></td>
+                                <td class="form-cell w-1/4 text-red-600 font-bold">1993 년 05 월 10 일</td>
+                            </tr>
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100">성별 (Sex) / লিঙ্গ</td>
+                                <td class="form-cell text-red-600 font-bold">[✓] 남 (Male) &nbsp; [ ] 여 (Female)</td>
+                                <td class="form-cell font-bold bg-slate-100">국적 (Nationality) / জাতীয়তা</td>
+                                <td class="form-cell text-red-600 font-bold">BANGLADESH (방글라데시)</td>
+                            </tr>
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100">외국인등록번호 (ARC No.)<br><span class="text-[10px] text-slate-500">এলিয়েন কার্ডের ১৩ ডিজিট নম্বর</span></td>
+                                <td class="form-cell text-red-600 font-bold">930510 - 5XXXXXX</td>
+                                <td class="form-cell font-bold bg-slate-100">여권번호 (Passport No.)<br><span class="text-[10px] text-slate-500">পাসপোর্ট নম্বর ও মেয়াদ</span></td>
+                                <td class="form-cell text-red-600 font-bold">A01234567 (만료일: 2030.12.31)</td>
+                            </tr>
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100">대한민국 내 주소<br><span class="text-[10px] text-slate-500">কোরিয়ায় বর্তমান বাসার ঠিকানা</span></td>
+                                <td class="form-cell colspan-3 text-red-600 font-bold" colspan="3">충청남도 아산시 신창면 서부북로 929 (সহ বর্তমান রুম নম্বর)</td>
+                            </tr>
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100">전화번호 (Phone No.)<br><span class="text-[10px] text-slate-500">কোরিয়ান মোবাইল নম্বর</span></td>
+                                <td class="form-cell text-red-600 font-bold">010 - XXXX - XXXX</td>
+                                <td class="form-cell font-bold bg-slate-100">현 근무처 (Workplace)<br><span class="text-[10px] text-slate-500">বর্তমান কোম্পানির নাম ও ফোন</span></td>
+                                <td class="form-cell text-red-600 font-bold">(주)드림텍 (사업자번호: XXX-XX-XXXXX)</td>
+                            </tr>
+                            <tr>
+                                <td class="form-cell font-bold bg-slate-100">신청일 및 서명<br><span class="text-[10px] text-slate-500">আবেদনের তারিখ ও স্বাক্ষর</span></td>
+                                <td class="form-cell text-red-600 font-bold" colspan="3">2026 년 11 월 12 일 &nbsp;&nbsp;&nbsp;&nbsp; 신청인 (Applicant): <span class="underline">MD SABBIR HOSSAIN</span> (서명/স্বাক্ষর)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sample 2: 초청장 (Invitation Letter Sample for Wife F-3) -->
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-300 space-y-3">
+                    <h4 class="font-extrabold text-blue-900 text-sm">নমুনা ২: 초청장 (Invitation Letter - স্ত্রীকে F-3 ভিসায় আনার আমন্ত্রণপত্রের নমুনা)</h4>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-300 text-xs space-y-2 text-slate-800 font-mono">
+                        <p class="font-bold text-center text-sm underline">초 청 장 (INVITATION LETTER)</p>
+                        <p><strong>1. 초청인 (আমন্ত্রণকারী - আপনি):</strong> 성명: HOSSAIN MD SABBIR / 외국인등록번호: 930510-5XXXXXX / 주소: 충청남도 아산시...</p>
+                        <p><strong>2. 피초청인 (যাকে আনবেন - স্ত্রী):</strong> 성명: SADIA ISLAM MIHIM / 생년월일: 2006.07.26 / 관계: 배우자 (Wife) / 국적: 방글라데시</p>
+                        <p><strong>3. 초청 목적 및 사유 (আমন্ত্রণের কারণ - কোরিয়ান ভাষায় লিখতে হবে):</strong></p>
+                        <div class="bg-white p-3 rounded border text-red-700">
+                            "본인은 현재 대한민국에서 성실히 근무하고 있는 근로자입니다. 한국에서 함께 생활하며 가정을 꾸리기 위해 배우자(SADIA ISLAM MIHIM)를 동반(F-3) 비자로 초청하고자 합니다. 체류 기간 동안 배우자의 모든 생활비와 체류 경비를 본인이 책임질 것을 서약합니다."<br>
+                            <span class="text-slate-500 text-[11px]">(বাংলা অর্থ: আমি বর্তমানে দক্ষিণ কোরিয়ায় নিষ্ঠার সাথে কর্মরত একজন কর্মী। কোরিয়ায় একসাথে বসবাস ও সংসার করার জন্য আমার স্ত্রীকে F-3 ভিসায় আমন্ত্রণ জানাতে চাই। অবস্থানকালীন স্ত্রীর যাবতীয় খরচ আমি বহন করার অঙ্গীকার করছি।)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. WON-GO-JI SIMULATOR -->
+            <section id="section-wonguji" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
+                <div class="bg-amber-50 border border-amber-300 p-3 rounded-xl text-xs text-amber-900">
+                    📌 <strong>원고지 공식 시험 규정:</strong> অনুচ্ছেদ লেখার নিয়ম অনুযায়ী প্রথম ঘরটি (Cell 1) খালি রেখে ২ নম্বর ঘর থেকে লেখা শুরু হবে।
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-sm">원고지 100자 (পরীক্ষার আসল নিয়মে)</h4>
+                        <span id="char-count-badge" class="font-bold text-blue-800 bg-blue-50 px-3 py-1 rounded-full text-xs">0 / 100 자</span>
+                    </div>
+                    <textarea id="wonguji-input" oninput="updateWongujiGrid()" class="w-full h-24 p-3 border rounded-xl text-xs bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="대가족과 핵가족의 장단점을 비교해 보면... ('한다'체로 작성)"></textarea>
+                    <div id="style-warning" class="hidden bg-red-100 text-red-700 p-2 rounded-xl text-xs font-semibold">
+                        ⚠️ সতর্কতা: '해요/합니다' ব্যবহার করা যাবে না, শুধুমাত্র '한다' স্টাইল ব্যবহার করুন।
+                    </div>
+                    <div class="border p-3 rounded-xl bg-slate-50 overflow-x-auto">
+                        <div class="text-[11px] font-bold text-slate-500 mb-2">격자 미리보기 (첫 칸 비움):</div>
+                        <div id="wonguji-cells" class="grid grid-cols-10 gap-1.5 w-max"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. AUDIO BOOK SECTION -->
+            <section id="section-audio" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div>
+                            <h3 class="font-bold text-base text-blue-900">🎧 অডিও বুক প্লেয়ার (সব নতুন শব্দসহ)</h3>
+                            <p class="text-xs text-slate-500">কোরিয়ান উচ্চারণ ও বাংলা অর্থ একসাথে শুনুন</p>
+                        </div>
+                        <button onclick="playAllAudio()" class="bg-emerald-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow">▶️ সব প্লে করুন</button>
+                    </div>
+                    <div id="audio-playlist" class="space-y-2 max-h-[500px] overflow-y-auto"></div>
+                </div>
+            </section>
+
+            <!-- 6. 16 CHAPTERS CURRICULUM -->
+            <section id="section-study" class="hidden max-w-5xl mx-auto px-4 py-6 space-y-4">
+                <h3 class="font-bold text-base text-slate-800">KIIP Level 4 — ১৬টি অধ্যায়ের পাঠ্যক্রম</h3>
+                <div id="chapters-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-lg z-40 no-print">
+            <div class="max-w-5xl mx-auto grid grid-cols-6 py-2 text-center text-[10px] text-slate-600 font-bold">
+                <button onclick="switchTab('vocab')" class="flex flex-col items-center text-blue-600">📚 শব্দকোষ</button>
+                <button onclick="switchTab('visa')" class="flex flex-col items-center hover:text-blue-600">✈️ ভিসা</button>
+                <button onclick="switchTab('forms')" class="flex flex-col items-center hover:text-blue-600">📝 ফরম নমুনা</button>
+                <button onclick="switchTab('wonguji')" class="flex flex-col items-center hover:text-blue-600">✍️ 원고지</button>
+                <button onclick="switchTab('audio')" class="flex flex-col items-center hover:text-blue-600">🎧 অডিও</button>
+                <button onclick="switchTab('study')" class="flex flex-col items-center hover:text-blue-600">📖 ১৬ অধ্যায়</button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        let currentUserName = "Sabbir";
+
+        // আপনার দেওয়া সব শব্দ (ডুপ্লিকেট বাদে সম্পূর্ণ ইউনিক ও বাংলা অর্থসহ)
+        const rawUserWords = [
+            { kr: "적응하다", bn: "মানিয়ে নেওয়া / খাপ খাওয়ানো", ex: "한국 생활에 잘 적응하다." },
+            { kr: "향상되다", bn: "উন্নত হওয়া / বৃদ্ধি পাওয়া", ex: "한국어 실력이 많이 향상되었다." },
+            { kr: "수요", bn: "চাহিদা", ex: "1인 가구 증가로 소형 주택의 수요가 늘었다." },
+            { kr: "승진", bn: "পদোন্নতি", ex: "열심히 일해서 과장으로 승진했다." },
+            { kr: "긍정적이다", bn: "ইতিবাচক হওয়া", ex: "매사에 긍정적인 태도를 갖는 것이 중요하다." },
+            { kr: "사업", bn: "ব্যবসা / প্রকল্প", ex: "새로운 사업을 시작하다." },
+            { kr: "수익", bn: "আয় / মুনাফা", ex: "회사 수익이 크게 증가했다." },
+            { kr: "회상", bn: "স্মৃতিচারণ", ex: "어린 시절을 회상하다." },
+            { kr: "체험 수기", bn: "অভিজ্ঞতার বিবরণ / স্মৃতিকথা", ex: "한국 생활 체험 수기를 쓰다." },
+            { kr: "번역자", bn: "অনুবাদক", ex: "전문 번역자로 활동하고 있다." },
+            { kr: "계기", bn: "উপলক্ষ / কারণ / সুযোগ", ex: "한국에 오게 된 계기가 무엇입니까?" },
+            { kr: "이주", bn: "অভিবাসন / স্থানান্তর", ex: "더 나은 삶을 위해 한국으로 이주했다." },
+            { kr: "기초", bn: "ভিত্তি / প্রাথমিক", ex: "기초부터 튼튼히 공부해야 한다." },
+            { kr: "적성", bn: "যোগ্যতা / রুচি ও সামর্থ্য", ex: "이 일은 내 적성에 잘 맞는다." },
+            { kr: "당연하다", bn: "স্বাভাবিক / যুক্তিসঙ্গত", ex: "부모님을 공경하는 것은 당연하다." },
+            { kr: "상황", bn: "পরিস্থিতি / অবস্থা", ex: "현재 상황을 정확히 파악해야 한다." },
+            { kr: "고령화", bn: "বয়স্ক জনসংখ্যা বৃদ্ধি (Aging)", ex: "한국 사회는 고령화가 빠르게 진행되고 있다." },
+            { kr: "차지하다", bn: "দখল করা / অংশ জুড়ে থাকা", ex: "1인 가구가 전체의 30%를 차지했다." },
+            { kr: "증가하다", bn: "বৃদ্ধি পাওয়া", ex: "인구가 계속 증가하고 있다." },
+            { kr: "전망이다", bn: "পূর্বাভাস / সম্ভাবনা", ex: "앞으로도 계속 늘어날 전망이다." },
+            { kr: "원인", bn: "কারণ", ex: "사고의 원인을 조사하고 있다." },
+            { kr: "대상", bn: "লক্ষ্যবস্তু / উদ্দেশ্য / পাত্র", ex: "노인을 대상으로 하는 돌봄 서비스가 필요하다." },
+            { kr: "제공하다", bn: "প্রদান করা / সরবরাহ করা", ex: "편리한 서비스를 제공하다." },
+            { kr: "서비스업", bn: "সেবা খাত (Service Industry)", ex: "1인 가구를 위한 서비스업이 발달했다." },
+            { kr: "규모", bn: "আকার / পরিধি / মাত্রা", ex: "시장 규모가 점점 커지고 있다." },
+            { kr: "정책", bn: "নীতিমালা (Policy)", ex: "정부의 주거 지원 정책이 시급하다." },
+            { kr: "개선하다", bn: "উন্নত করা / সংস্কার করা", ex: "기존의 제도를 개선해야 한다." },
+            { kr: "주거", bn: "বাসস্থান / আবাসন", ex: "주거 환경을 개선하다." },
+            { kr: "지원", bn: "সহায়তা / সমর্থন", ex: "경제적 지원이 필요하다." },
+            { kr: "시급하다", bn: "জরুরি / আশু প্রয়োজন", ex: "대책 마련이 시급하다." },
+            { kr: "실시하다", bn: "বাস্তবায়ন করা / চালু করা", ex: "새로운 제도를 실시하다." },
+            { kr: "뽑다", bn: "বেছে নেওয়া / নির্বাচন করা", ex: "가장 큰 원인으로 고령화를 뽑을 수 있다." },
+            { kr: "등장하다", bn: "আবির্ভূত হওয়া / সামনে আসা", ex: "새로운 상품이 등장했다." },
+            { kr: "생필품", bn: "নিত্যপ্রয়োজনীয় দ্রব্য", ex: "마트에서 생필품을 사다." },
+            { kr: "전통적", bn: "ঐতিহ্যগত", ex: "전통적인 가족 형태가 변하고 있다." },
+            { kr: "세심하다", bn: "সূক্ষ্ম / যত্নশীল", ex: "세심한 배려와 정책이 필요하다." },
+            { kr: "1인 가구", bn: "একক ব্যক্তি পরিবার (Single-person household)", ex: "최근 1인 가구가 급증하고 있다." },
+            { kr: "가치관", bn: "মূল্যবোধ", ex: "결혼에 대한 가치관이 변화했다." },
+            { kr: "이혼율", bn: "বিবাহবিচ্ছেদের হার", ex: "이혼율 증가가 한 원인이다." },
+            { kr: "소포장", bn: "ছোট প্যাকেটজাত (Small packaging)", ex: "소포장된 과일이 인기를 끌고 있다." },
+            { kr: "돌봄 서비스", bn: "যত্ন ও পরিচর্যা সেবা", ex: "노인 돌봄 서비스를 확대하다." },
+            { kr: "대가족", bn: "যৌথ পরিবার", ex: "과거에는 대가족이 많았다." },
+            { kr: "핵가족", bn: "একক পরিবার", ex: "현대는 핵가족 중심 사회이다." },
+            { kr: "부푼 꿈", bn: "বুকভরা স্বপ্ন / উচ্চাশা", ex: "부푼 꿈을 안고 한국에 왔다." },
+            { kr: "설레다", bn: "রোমাঞ্চিত হওয়া / মন উচাটন হওয়া", ex: "새로운 시작을 앞두고 마음이 설렌다." },
+            { kr: "뭐든 다 할 수 있을 것 같다", bn: "মনে হয় সবকিছুই করতে পারব", ex: "젊었을 때는 뭐든 다 할 수 있을 것 같았다." },
+            { kr: "해내다", bn: "সফলভাবে সম্পন্ন করা", ex: "어려운 일을 끝내 해냈다." },
+            { kr: "자신이 있다", bn: "আত্মবিশ্বাস থাকা", ex: "한국어 시험에 합격할 자신이 있다." },
+            { kr: "향수병", bn: "গৃহকাতরতা (Homesickness)", ex: "타국 생활에서 향수병을 겪다." },
+            { kr: "그립다", bn: "মনে পড়া / অভাব বোধ করা", ex: "고향에 계신 부모님이 그립다." },
+            { kr: "여기저기 뛰어다니다", bn: "এদিক-সেদিক ছোটাছুটি করা", ex: "일자리와 집을 구하려고 여기저기 뛰어다녔다." },
+            { kr: "신기하다", bn: "আশ্চর্যজনক / অদ্ভুত সুন্দর", ex: "한국의 문화가 신기하다." },
+            { kr: "답답하다", bn: "দমবন্ধ লাগা / অসহায় বা বিরক্ত বোধ করা", ex: "말이 통하지 않아서 답답했다." },
+            { kr: "낯설다", bn: "অপরিচিত / অচেনা", ex: "처음에는 모든 것이 낯설었다." },
+            { kr: "주변을 돌아보다", bn: "চারপাশ ঘুরে দেখা / আশেপাশের খোঁজ নেওয়া", ex: "바쁜 일상 속에서도 주변을 돌아볼 여유가 필요하다." },
+            { kr: "여유", bn: "অবসর / প্রশান্তি / সচ্ছলতা", ex: "마음의 여유를 갖다." },
+            { kr: "서투르다", bn: "কাঁচা / অনভিজ্ঞ / অদক্ষ", ex: "아직 한국어 표현이 서투르다." },
+            { kr: "오해를 받다", bn: "ভুল বোঝাবুঝির শিকার হওয়া", ex: "문화 차이 때문에 오해를 받았다." },
+            { kr: "노하우", bn: "কৌশল / অভিজ্ঞতা (Know-how)", ex: "선배에게 일하는 노하우를 배웠다." },
+            { kr: "편견", bn: "কুসংস্কার / পক্ষপাতদুষ্ট ধারণা", ex: "외국인에 대한 편견을 버려야 한다." },
+            { kr: "자리를 잡다", bn: "থিতু হওয়া / প্রতিষ্ঠিত হওয়া", ex: "한국 생활에 완전히 자리를 잡았다." },
+            { kr: "초청하다", bn: "আমন্ত্রণ জানানো", ex: "가족을 한국으로 초청하다." },
+            { kr: "환경", bn: "পরিবেশ", ex: "새로운 환경에 적응하다." },
+            { kr: "다행히", bn: "সৌভাগ্যবশত", ex: "다행히 좋은 사람들을 만났다." },
+            { kr: "머리를 감다", bn: "চুল ধোয়া / শ্যাম্পু করা", ex: "아침에 일어나서 머리를 감았다." },
+            { kr: "앞만 보고 달리다", bn: "শুধু সামনের দিকে তাকিয়ে ছুটে চলা", ex: "성공을 위해 앞만 보고 달렸다." },
+            { kr: "챙겨 먹다", bn: "যত্ন করে খাওয়া / সময়মতো খাওয়া", ex: "바빠도 밥은 꼭 챙겨 먹어야 한다." },
+            { kr: "어리다", bn: "বয়সে ছোট হওয়া", ex: "나이가 어리지만 생각이 깊다." },
+            { kr: "즐기다", bn: "উপভোগ করা", ex: "한국 생활을 즐기면서 지낸다." },
+            { kr: "고생 끝에 낙이 오다", bn: "কষ্টের পর সুখ আসে", ex: "고생 끝에 낙이 온다는 말처럼 좋은 날이 왔다." },
+            { kr: "엊그제", bn: "এই তো সেদিন (গত পরশু / খুব সম্প্রতি)", ex: "한국에 온 지가 엊그제 같다." },
+            { kr: "꾸준히", bn: "ধারাবাহিকভাবে / নিয়মিত", ex: "꾸준히 노력하면 성공할 수 있다." },
+            { kr: "고진감래", bn: "দুঃখের পর সুখ (苦盡甘來)", ex: "고진감래의 정신으로 버텼다." },
+            { kr: "옛말", bn: "প্রবাদ / পুরোনো কথা", ex: "옛말에 틀린 것이 하나도 없다." },
+            { kr: "지름길", bn: "সংক্ষিপ্ত পথ (Shortcut)", ex: "성공으로 가는 지름길은 노력이다." },
+            { kr: "제2의 고향", bn: "দ্বিতীয় জন্মভূমি / দ্বিতীয় বাড়ি", ex: "한국은 나에게 제2의 고향이다." },
+            { kr: "기대감", bn: "প্রত্যাশা / আশা", ex: "미래에 대한 기대감이 크다." },
+            { kr: "외로움", bn: "একাকিত্ব", ex: "타지 생활에서 외로움을 느끼다." },
+            { kr: "호기심", bn: "কৌতূহল", ex: "새로운 것에 대한 호기심이 많다." },
+            { kr: "자신감", bn: "আত্মবিশ্বাস", ex: "한국어 실력이 늘면서 자신감이 생겼다." },
+            { kr: "생소함", bn: "অপরিচিতি / নতুনত্ব", ex: "처음 느끼는 생소함을 극복했다." },
+            { kr: "마음을 먹다", bn: "মনস্থির করা / সংকল্প করা", ex: "한국어를 열심히 배우기로 마음을 먹었다." },
+            { kr: "꽤", bn: "বেশ / অনেকটা", ex: "한국에 온 지 꽤 오래되었다." },
+            { kr: "겁이 나다", bn: "ভয় লাগা", ex: "혼자 시작하려니 조금 겁이 났다." },
+            { kr: "어쩌면", bn: "হয়তোবা / সম্ভবত", ex: "어쩌면 이것이 좋은 기회일지도 모른다." },
+            { kr: "다가가다", bn: "কাছে যাওয়া / এগিয়ে যাওয়া", ex: "먼저 웃으면서 친구에게 다가갔다." },
+            { kr: "기회를 잡다", bn: "সুযোগ লুফে নেওয়া", ex: "찾아온 좋은 기회를 잡아야 한다." }
+        ];
+
+        // Remove any duplicate Korean terms automatically
+        const uniqueWords = Array.from(new Map(rawUserWords.map(item => [item.kr, item])).values());
+
+        const chaptersData = [
+            { id: 1, kr: "한국 생활 적응", bn: "কোরিয়ায় মানিয়ে নেওয়া" },
+            { id: 2, kr: "가족의 변화", bn: "পরিবারের পরিবর্তন" },
+            { id: 3, kr: "생활 속의 과학", bn: "দৈনন্দিন জীবনে বিজ্ঞান" },
+            { id: 4, kr: "한국의 의례", bn: "কোরিয়ার আচার-অনুষ্ঠান" },
+            { id: 5, kr: "문화유산", bn: "সাংস্কৃতিক ঐতিহ্য" },
+            { id: 6, kr: "국제화 시대", bn: "বিশ্বায়নের যুগ" },
+            { id: 7, kr: "현대인의 질병", bn: "আধুনিক মানুষের রোগব্যাধি" },
+            { id: 8, kr: "정보화 사회", bn: "তথ্যপ্রযুক্তি নির্ভর সমাজ" },
+            { id: 9, kr: "사건과 사고", bn: "ঘটনা ও দুর্ঘটনা" },
+            { id: 10, kr: "언어생활", bn: "ভাষার ব্যবহার" },
+            { id: 11, kr: "교육 제도", bn: "শিক্ষা ব্যবস্থা" },
+            { id: 12, kr: "선거와 투표", bn: "নির্বাচন ও ভোট" },
+            { id: 13, kr: "환경 보호", bn: "পরিবেশ সুরক্ষা" },
+            { id: 14, kr: "생활과 경제", bn: "জীবন ও অর্থনীতি" },
+            { id: 15, kr: "법과 질서", bn: "আইন ও শৃঙ্খলা" },
+            { id: 16, kr: "이민 생활", bn: "অভিবাসী জীবন" }
+        ];
+
+        function speakText(text, lang = 'ko-KR') {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                utterance.pitch = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function speakSalam() {
+            speakText(`আসসালামু আলাইকুম ওয়া রাহমাতুল্লাহি ওয়া বারাকাতুহু ${currentUserName}, আপনাকে স্বাগতম!`, 'bn-BD');
+        }
+
+        function enterApp() {
+            const inputVal = document.getElementById('user-name-input').value.trim();
+            currentUserName = inputVal !== "" ? inputVal : "Sabbir";
+            document.getElementById('display-name').innerText = currentUserName;
+            document.getElementById('user-avatar').innerText = currentUserName.charAt(0).toUpperCase();
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            
+            renderUniqueVocabList();
+            initWongujiCells();
+            renderAudioPlaylist();
+            renderChapters();
+            speakSalam();
+        }
+
+        function renderUniqueVocabList() {
+            document.getElementById('total-word-count').innerText = uniqueWords.length;
+            const grid = document.getElementById('unique-vocab-grid');
+            grid.innerHTML = '';
+            uniqueWords.forEach((w, idx) => {
+                const card = document.createElement('div');
+                card.className = "p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-blue-400 transition space-y-1.5";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="font-extrabold text-blue-900 text-sm">${idx + 1}. ${w.kr}</span>
+                        <button onclick="speakText('${w.kr}')" class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 text-xs font-bold">🔊 শুনুন</button>
+                    </div>
+                    <p class="text-xs font-semibold text-emerald-800">🇧🇩 অর্থ: ${w.bn}</p>
+                    <p class="text-[11px] text-slate-600">✏️ উদাহরণ: ${w.ex}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function performSmartSearch() {
+            const query = document.getElementById('ai-search-input').value.trim();
+            if (!query) return;
+            switchTab('vocab');
+
+            const container = document.getElementById('search-results-container');
+            container.innerHTML = '';
+
+            const matches = uniqueWords.filter(w => w.kr.includes(query) || w.bn.includes(query));
+
+            if (matches.length > 0) {
+                matches.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white p-5 rounded-2xl shadow-md border-2 border-blue-500 space-y-2";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="text-xl font-extrabold text-blue-900">${item.kr}</h3>
+                            <button onclick="speakText('${item.kr}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">🔊 উচ্চারণ</button>
+                        </div>
+                        <p class="text-sm font-bold text-emerald-700">🇧🇩 বাংলা অর্থ: ${item.bn}</p>
+                        <p class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded-lg border">✏️ <strong>বাক্য (한다 체):</strong> ${item.ex}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            } else {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl shadow-md border-2 border-amber-400 space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center border-b pb-2">
+                        <h3 class="text-xl font-extrabold text-blue-900">${query}</h3>
+                        <button onclick="speakText('${query}')" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">🔊 উচ্চারণ</button>
+                    </div>
+                    <p class="text-xs text-slate-700">✏️ <strong>উদাহরণ বাক্য:</strong> ${query}은(는) 한국어 학습 및 실생활에서 중요하게 사용된다.</p>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        function initWongujiCells() {
+            const container = document.getElementById('wonguji-cells');
+            container.innerHTML = '';
+            for(let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'won-cell';
+                cell.id = `cell-${i}`;
+                if (i === 0) cell.classList.add('empty-first');
+                container.appendChild(cell);
+            }
+        }
+
+        function updateWongujiGrid() {
+            const text = document.getElementById('wonguji-input').value;
+            document.getElementById('char-count-badge').innerText = `${text.length} / 100 자`;
+            const warning = document.getElementById('style-warning');
+            if (text.includes('요') || text.includes('습니다')) {
+                warning.classList.remove('hidden');
+            } else {
+                warning.classList.add('hidden');
+            }
+            for(let i = 0; i < 100; i++) {
+                const cell = document.getElementById(`cell-${i}`);
+                if (cell) {
+                    if (i === 0) {
+                        cell.innerText = '';
+                    } else {
+                        const charIndex = i - 1;
+                        cell.innerText = text[charIndex] ? text[charIndex] : '';
+                    }
+                }
+            }
+        }
+
+        function renderAudioPlaylist() {
+            const playlist = document.getElementById('audio-playlist');
+            playlist.innerHTML = '';
+            uniqueWords.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between text-xs";
+                div.innerHTML = `
+                    <div>
+                        <div class="font-bold text-slate-800 text-sm">${index + 1}. ${item.kr}</div>
+                        <div class="text-slate-500">${item.bn}</div>
+                    </div>
+                    <button onclick="speakText('${item.kr}. ${item.bn}', 'ko-KR')" class="bg-blue-600 text-white font-bold px-3 py-1.5 rounded-lg">▶️ প্লে</button>
+                `;
+                playlist.appendChild(div);
+            });
+        }
+
+        function playAllAudio() {
+            let delay = 0;
+            uniqueWords.slice(0, 20).forEach(item => {
+                setTimeout(() => { speakText(`${item.kr}`, 'ko-KR'); }, delay);
+                delay += 2500;
+            });
+        }
+
+        function handleKeyPress(e) { if (e.key === 'Enter') performSmartSearch(); }
+
+        function switchTab(tab) {
+            ['vocab', 'visa', 'forms', 'wonguji', 'audio', 'study'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).className = "py-2 rounded-lg text-slate-600 hover:bg-slate-50";
+            });
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = "py-2 rounded-lg bg-blue-600 text-white font-bold";
+        }
+
+        function renderChapters() {
+            const grid = document.getElementById('chapters-grid');
+            grid.innerHTML = '';
+            chaptersData.forEach(ch => {
+                const item = document.createElement('div');
+                item.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between";
+                item.innerHTML = `
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">অধ্যায় ${ch.id < 10 ? '0'+ch.id : ch.id}</span>
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">${ch.kr}</h4>
+                        <p class="text-xs text-slate-500">${ch.bn}</p>
+                    </div>
+                    <div class="text-blue-600 font-bold">→</div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
